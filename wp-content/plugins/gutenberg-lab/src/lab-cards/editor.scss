@@ -11,7 +11,9 @@
 	font-size: 0.8rem;
 }
 
-/* Make the + appender easy to spot */
+/* Make the + appender easy to spot and full-width in the flex row */
 .wp-block-create-block-lab-cards .block-list-appender {
 	margin: 0.5rem 0 0;
+	flex: 1 1 100%;
+	max-width: 100%;
 }

@@ -1,1 +1,1 @@
-.lab-cards__hint{background:#f0f0f1;border-radius:4px;color:#50575e;font-size:.8rem;margin:0 0 .75rem;padding:.35rem .5rem}.wp-block-create-block-lab-cards .block-list-appender{margin:.5rem 0 0}
+.lab-cards__hint{background:#f0f0f1;border-radius:4px;color:#50575e;font-size:.8rem;margin:0 0 .75rem;padding:.35rem .5rem}.wp-block-create-block-lab-cards .block-list-appender{flex:1 1 100%;margin:.5rem 0 0;max-width:100%}
