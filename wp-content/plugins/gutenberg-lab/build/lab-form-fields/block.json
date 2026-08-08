@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-form-fields",
+  "version": "0.2.0",
+  "title": "Lab Form Fields",
+  "category": "widgets",
+  "icon": "forms",
+  "description": "Add form controls one by one (+). Each child is a single field type for reference.",
+  "keywords": [
+    "form",
+    "fields",
+    "controls",
+    "reference",
+    "lab"
+  ],
+  "allowedBlocks": [
+    "create-block/lab-form-field"
+  ],
+  "supports": {
+    "html": false,
+    "align": [
+      "wide"
+    ]
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

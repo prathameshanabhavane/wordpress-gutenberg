@@ -137,5 +137,130 @@ return array(
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',
 		'render' => 'file:./render.php'
+	),
+	'lab-form-field' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-form-field',
+		'version' => '0.2.0',
+		'title' => 'Lab Form Field',
+		'category' => 'widgets',
+		'icon' => 'editor-textcolor',
+		'description' => 'One form control for reference. Choose the field type, then edit its value.',
+		'keywords' => array(
+			'field',
+			'input',
+			'form',
+			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-form-fields'
+		),
+		'attributes' => array(
+			'fieldType' => array(
+				'type' => 'string',
+				'default' => 'text'
+			),
+			'label' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'textValue' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'textareaValue' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'toggleValue' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'selectValue' => array(
+				'type' => 'string',
+				'default' => 'option-a'
+			),
+			'checkboxValue' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'radioValue' => array(
+				'type' => 'string',
+				'default' => 'red'
+			),
+			'rangeValue' => array(
+				'type' => 'number',
+				'default' => 40
+			),
+			'tokensValue' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'imageId' => array(
+				'type' => 'number'
+			),
+			'imageUrl' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'imageAlt' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'fileId' => array(
+				'type' => 'number'
+			),
+			'fileUrl' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'fileName' => array(
+				'type' => 'string',
+				'default' => ''
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-form-fields' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-form-fields',
+		'version' => '0.2.0',
+		'title' => 'Lab Form Fields',
+		'category' => 'widgets',
+		'icon' => 'forms',
+		'description' => 'Add form controls one by one (+). Each child is a single field type for reference.',
+		'keywords' => array(
+			'form',
+			'fields',
+			'controls',
+			'reference',
+			'lab'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-form-field'
+		),
+		'supports' => array(
+			'html' => false,
+			'align' => array(
+				'wide'
+			)
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
 	)
 );

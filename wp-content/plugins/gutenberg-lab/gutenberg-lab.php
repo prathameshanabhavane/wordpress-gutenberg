@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Register Lab Cards (parent) + Lab Card (child).
+ * Register Lab Cards, Lab Card, and Lab Form Fields.
  */
 function create_block_gutenberg_lab_block_init() {
 	$manifest = __DIR__ . '/build/blocks-manifest.php';
@@ -28,7 +28,7 @@ function create_block_gutenberg_lab_block_init() {
 	}
 
 	// Fallback: register each built block folder.
-	$blocks = array( 'lab-cards', 'lab-card' );
+	$blocks = array( 'lab-cards', 'lab-card', 'lab-form-fields', 'lab-form-field' );
 	foreach ( $blocks as $block ) {
 		$block_path = __DIR__ . '/build/' . $block;
 		if ( file_exists( $block_path . '/block.json' ) ) {

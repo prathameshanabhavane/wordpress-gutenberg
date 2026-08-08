@@ -191,6 +191,7 @@ build/                →  Factory output (WordPress loads THIS, not src/)
 | 8 | [08-debug-cheatsheet.md](./08-debug-cheatsheet.md) | All debug tools in one place |
 | 9 | [09-lab-card-block.md](./09-lab-card-block.md) | Single card fields explained |
 | 10 | [10-lab-cards-loop.md](./10-lab-cards-loop.md) | **Advanced:** parent grid + add many cards (+) |
+| 11 | [11-lab-form-fields.md](./11-lab-form-fields.md) | **Reference:** add one field at a time (+ text/toggle/select/…) |
 
 **Suggested pace:** one step at a time. Steps 0–1 = understanding. Steps 2–7 = hands-on. Step 8 = keep open while practicing. Steps 9–10 = Lab Card + repeating Lab Cards.
 

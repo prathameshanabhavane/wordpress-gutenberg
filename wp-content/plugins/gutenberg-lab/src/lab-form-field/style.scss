@@ -1,0 +1,49 @@
+/**
+ * Shared styles — single Lab Form Field.
+ */
+
+.wp-block-create-block-lab-form-field.lab-form-field,
+.lab-form-field.wp-block-create-block-lab-form-field {
+	box-sizing: border-box;
+	padding: 0.85rem 1rem;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	background: #fff;
+	color: #1e1e1e;
+}
+
+.lab-form-field__badge {
+	display: inline-block;
+	margin-bottom: 0.5rem;
+	padding: 0.15rem 0.45rem;
+	border-radius: 999px;
+	background: #f0f0f1;
+	color: #50575e;
+	font-size: 0.7rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.lab-form-field__label {
+	margin: 0 0 0.35rem;
+}
+
+.lab-form-field__value {
+	font-size: 0.95rem;
+	word-break: break-word;
+}
+
+.lab-form-field__thumb {
+	display: block;
+	max-width: 160px;
+	height: auto;
+	border-radius: 4px;
+}
+
+.lab-form-field__control-label {
+	margin: 0 0 0.5rem;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+}

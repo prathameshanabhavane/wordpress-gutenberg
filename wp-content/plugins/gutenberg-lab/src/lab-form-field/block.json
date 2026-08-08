@@ -1,0 +1,85 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/lab-form-field",
+	"version": "0.2.0",
+	"title": "Lab Form Field",
+	"category": "widgets",
+	"icon": "editor-textcolor",
+	"description": "One form control for reference. Choose the field type, then edit its value.",
+	"keywords": [ "field", "input", "form", "lab" ],
+	"parent": [ "create-block/lab-form-fields" ],
+	"attributes": {
+		"fieldType": {
+			"type": "string",
+			"default": "text"
+		},
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"textValue": {
+			"type": "string",
+			"default": ""
+		},
+		"textareaValue": {
+			"type": "string",
+			"default": ""
+		},
+		"toggleValue": {
+			"type": "boolean",
+			"default": false
+		},
+		"selectValue": {
+			"type": "string",
+			"default": "option-a"
+		},
+		"checkboxValue": {
+			"type": "boolean",
+			"default": false
+		},
+		"radioValue": {
+			"type": "string",
+			"default": "red"
+		},
+		"rangeValue": {
+			"type": "number",
+			"default": 40
+		},
+		"tokensValue": {
+			"type": "array",
+			"default": []
+		},
+		"imageId": {
+			"type": "number"
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"fileId": {
+			"type": "number"
+		},
+		"fileUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"fileName": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"textdomain": "gutenberg-lab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
