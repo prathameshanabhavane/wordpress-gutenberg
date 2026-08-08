@@ -8,8 +8,13 @@
 	"attributes": {
 		"message": { "type": "string", "default": "Hello Gutenberg" }
 	},
+	"supports": {
+		"color": { "background": true, "text": true },
+		"spacing": { "padding": true, "margin": true }
+	},
 	"textdomain": "gutenberg-lab",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
 }

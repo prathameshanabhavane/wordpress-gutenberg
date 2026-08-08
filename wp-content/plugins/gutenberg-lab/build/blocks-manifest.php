@@ -14,9 +14,20 @@ return array(
 				'default' => 'Hello Gutenberg'
 			)
 		),
+		'supports' => array(
+			'color' => array(
+				'background' => true,
+				'text' => true
+			),
+			'spacing' => array(
+				'padding' => true,
+				'margin' => true
+			)
+		),
 		'textdomain' => 'gutenberg-lab',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
-		'style' => 'file:./style-index.css'
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
 	)
 );
