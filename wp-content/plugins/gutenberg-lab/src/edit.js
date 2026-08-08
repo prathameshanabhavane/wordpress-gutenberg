@@ -4,12 +4,15 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import {
 	useBlockProps,
 	RichText,
 	MediaUpload,
 	MediaUploadCheck,
 	InspectorControls,
+	BlockControls,
+	__experimentalLinkControl as LinkControl,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -17,17 +20,22 @@ import {
 	ToggleControl,
 	Button,
 	ResponsiveWrapper,
+	ToolbarGroup,
+	ToolbarButton,
+	Popover,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { link as linkIcon, linkOff } from '@wordpress/icons';
 import './editor.scss';
 
 /**
  * @param {Object}   props
  * @param {Object}   props.attributes
  * @param {Function} props.setAttributes
+ * @param {boolean}  props.isSelected
  * @return {Element} Element to render.
  */
-export default function Edit( { attributes, setAttributes } ) {
+export default function Edit( { attributes, setAttributes, isSelected } ) {
 	const {
 		imageId,
 		imageUrl,
@@ -38,6 +46,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		ctaUrl,
 		ctaOpensInNewTab,
 	} = attributes;
+
+	const [ isLinkOpen, setIsLinkOpen ] = useState( false );
 
 	const blockProps = useBlockProps( {
 		className: 'lab-card',
@@ -65,8 +75,68 @@ export default function Edit( { attributes, setAttributes } ) {
 		} );
 	};
 
+	const onChangeLink = ( nextValue = {} ) => {
+		setAttributes( {
+			ctaUrl: nextValue?.url ?? '',
+			ctaOpensInNewTab: nextValue?.opensInNewTab ?? false,
+		} );
+	};
+
+	const onRemoveLink = () => {
+		setAttributes( {
+			ctaUrl: '',
+			ctaOpensInNewTab: false,
+		} );
+		setIsLinkOpen( false );
+	};
+
 	return (
 		<>
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ linkIcon }
+						label={
+							ctaUrl
+								? __( 'Edit CTA link', 'gutenberg-lab' )
+								: __( 'Add CTA link', 'gutenberg-lab' )
+						}
+						onClick={ () => setIsLinkOpen( ( open ) => ! open ) }
+						isActive={ !! ctaUrl || isLinkOpen }
+					/>
+					{ ctaUrl && (
+						<ToolbarButton
+							icon={ linkOff }
+							label={ __( 'Remove CTA link', 'gutenberg-lab' ) }
+							onClick={ onRemoveLink }
+						/>
+					) }
+				</ToolbarGroup>
+			</BlockControls>
+
+			{ isLinkOpen && (
+				<Popover
+					placement="bottom"
+					onClose={ () => setIsLinkOpen( false ) }
+					focusOnMount="firstElement"
+				>
+					<LinkControl
+						value={ {
+							url: ctaUrl,
+							opensInNewTab: ctaOpensInNewTab,
+						} }
+						onChange={ onChangeLink }
+						onRemove={ onRemoveLink }
+						settings={ [
+							{
+								id: 'opensInNewTab',
+								title: __( 'Open in new tab', 'gutenberg-lab' ),
+							},
+						] }
+					/>
+				</Popover>
+			) }
+
 			<InspectorControls>
 				<PanelBody title={ __( 'Image', 'gutenberg-lab' ) } initialOpen={ true }>
 					<MediaUploadCheck>
@@ -130,6 +200,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( value ) => setAttributes( { ctaUrl: value } ) }
 						type="url"
 						placeholder="https://"
+						help={ __(
+							'Or use the link icon in the block toolbar.',
+							'gutenberg-lab'
+						) }
 					/>
 					<ToggleControl
 						label={ __( 'Open in new tab', 'gutenberg-lab' ) }
@@ -138,6 +212,13 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { ctaOpensInNewTab: value } )
 						}
 					/>
+					{ ctaUrl && (
+						<p className="lab-card__cta-url-preview">
+							<a href={ ctaUrl } target="_blank" rel="noreferrer">
+								{ ctaUrl }
+							</a>
+						</p>
+					) }
 				</PanelBody>
 			</InspectorControls>
 
@@ -194,15 +275,42 @@ export default function Edit( { attributes, setAttributes } ) {
 						value={ description }
 						onChange={ ( value ) => setAttributes( { description: value } ) }
 					/>
-					{ ctaText && (
-						<span className="lab-card__cta lab-card__cta--preview">
-							{ ctaText }
-						</span>
-					) }
-					{ ! ctaUrl && (
+
+					<div className="lab-card__cta-row">
+						<RichText
+							tagName="span"
+							className="lab-card__cta lab-card__cta--preview"
+							placeholder={ __( 'Learn more', 'gutenberg-lab' ) }
+							value={ ctaText }
+							onChange={ ( value ) => setAttributes( { ctaText: value } ) }
+							allowedFormats={ [] }
+							withoutInteractiveFormatting
+						/>
+						{ isSelected && (
+							<Button
+								className="lab-card__link-button"
+								icon={ ctaUrl ? linkIcon : linkIcon }
+								label={
+									ctaUrl
+										? __( 'Edit link', 'gutenberg-lab' )
+										: __( 'Add link', 'gutenberg-lab' )
+								}
+								onClick={ () => setIsLinkOpen( true ) }
+								variant="tertiary"
+								size="small"
+							/>
+						) }
+					</div>
+
+					{ ctaUrl ? (
+						<p className="lab-card__cta-hint lab-card__cta-hint--linked">
+							{ __( 'Linked to:', 'gutenberg-lab' ) }{ ' ' }
+							<code>{ ctaUrl }</code>
+						</p>
+					) : (
 						<p className="lab-card__cta-hint">
 							{ __(
-								'Set the button URL in the sidebar → Call to action.',
+								'Click the link icon in the toolbar (or beside the button) to add a URL.',
 								'gutenberg-lab'
 							) }
 						</p>
