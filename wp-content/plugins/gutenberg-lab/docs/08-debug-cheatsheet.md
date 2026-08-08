@@ -135,5 +135,6 @@ Then run `npm run build` once.
 
 ---
 
-**Previous:** [07-build-and-assets.md](./07-build-and-assets.md)  
+**Previous:** [08-debug-cheatsheet.md](./08-debug-cheatsheet.md)  
+**Next:** [09-lab-card-block.md](./09-lab-card-block.md)  
 **Back to index:** [README.md](./README.md)

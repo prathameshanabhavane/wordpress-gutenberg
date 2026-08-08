@@ -2,15 +2,65 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "create-block/gutenberg-lab",
-	"version": "0.1.0",
-	"title": "Gutenberg Lab",
+	"version": "0.2.0",
+	"title": "Lab Card",
 	"category": "widgets",
+	"icon": "format-image",
+	"description": "A card with image, title, description, and a call-to-action link.",
+	"keywords": [ "card", "image", "cta", "lab" ],
 	"attributes": {
-		"message": { "type": "string", "default": "Hello Gutenberg" }
+		"imageId": {
+			"type": "number"
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		},
+		"ctaText": {
+			"type": "string",
+			"default": "Learn more"
+		},
+		"ctaUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"ctaOpensInNewTab": {
+			"type": "boolean",
+			"default": false
+		}
 	},
 	"supports": {
-		"color": { "background": true, "text": true },
-		"spacing": { "padding": true, "margin": true }
+		"align": [ "wide", "full" ],
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		},
+		"html": false
+	},
+	"example": {
+		"attributes": {
+			"title": "Card title",
+			"description": "A short description of this card.",
+			"ctaText": "Learn more",
+			"ctaUrl": "#",
+			"imageUrl": "https://picsum.photos/640/360"
+		}
 	},
 	"textdomain": "gutenberg-lab",
 	"editorScript": "file:./index.js",

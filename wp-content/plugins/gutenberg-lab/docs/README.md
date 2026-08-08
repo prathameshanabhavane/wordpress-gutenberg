@@ -5,7 +5,7 @@ You do **not** need to be a React expert or a WordPress veteran.
 
 ## How to use this guide (important)
 
-1. Open the files **in order** from the table below (0 → 8).  
+1. Open the files **in order** from the table below (0 → 9).  
 2. At the end of each file, click **Next**.  
 3. Do the **How to test** section before moving on.  
 4. If something breaks, open [08-debug-cheatsheet.md](./08-debug-cheatsheet.md).  
@@ -58,8 +58,9 @@ You (admin)
 |------|--------|----------------|
 | Plugin name | Gutenberg Lab | The add-on you activate |
 | Block name | `create-block/gutenberg-lab` | Unique ID WordPress stores in the post |
+| Inserter title | **Lab Card** | What you search for in **+** |
 | Type | **Dynamic block** | Editor stores settings; **PHP** draws visitor HTML |
-| Main setting | `message` | The text you type in the block |
+| Fields | image, title, description, CTA | See [09-lab-card-block.md](./09-lab-card-block.md) |
 
 ---
 
@@ -111,23 +112,23 @@ Read this once. Come back whenever you feel lost.
  [Browser loads editor JS] ──► registerBlockType + Edit UI
         │
         ▼
- [You insert “Gutenberg Lab” and type a message]
-        │                 setAttributes({ message: "..." })
+ [You insert “Lab Card”: image, title, description, CTA]
+        │                 setAttributes({ title, description, imageUrl, ctaUrl, ... })
         ▼
  [You click Update]
         │
         ▼
  [Database stores something like:]
-   <!-- wp:create-block/gutenberg-lab {"message":"Hello lab"} /-->
+   <!-- wp:create-block/gutenberg-lab {"title":"Hello","ctaUrl":"https://..."} /-->
         │
         ▼
  [Visitor opens the post URL]
         │
         ▼
  [WordPress runs render.php]
-        │                 reads $attributes['message']
+        │                 reads $attributes (image, title, description, CTA)
         ▼
- [HTML appears: <p>Hello lab</p> + live <time>]
+ [HTML card appears: image + heading + text + link button]
 ```
 
 ### C) Static vs dynamic (why our `save` is empty)
@@ -187,8 +188,9 @@ build/                →  Factory output (WordPress loads THIS, not src/)
 | 6 | [06-render-php.md](./06-render-php.md) | Frontend HTML (`render.php`) |
 | 7 | [07-build-and-assets.md](./07-build-and-assets.md) | `npm start` and the `build/` folder |
 | 8 | [08-debug-cheatsheet.md](./08-debug-cheatsheet.md) | All debug tools in one place |
+| 9 | [09-lab-card-block.md](./09-lab-card-block.md) | Current block: image + title + description + CTA |
 
-**Suggested pace:** one step at a time. Steps 0–1 = understanding. Steps 2–7 = hands-on. Step 8 = keep open while practicing.
+**Suggested pace:** one step at a time. Steps 0–1 = understanding. Steps 2–7 = hands-on. Step 8 = keep open while practicing. Step 9 = the card you build in this plugin.
 
 ---
 
@@ -220,7 +222,7 @@ define( 'SCRIPT_DEBUG', true );
 | Word | Meaning |
 |------|---------|
 | **Block** | One piece of content in the editor (Paragraph, Image, your lab block) |
-| **Attribute** | A piece of data the block stores (e.g. `message`) |
+| **Attribute** | A piece of data the block stores (e.g. `title`, `ctaUrl`) |
 | **Editor** | The admin screen where you write posts with blocks |
 | **Frontend** | The public page visitors see |
 | **Plugin** | Extra code package that adds features |
@@ -236,17 +238,11 @@ define( 'SCRIPT_DEBUG', true );
 
 You “get it” when you can:
 
-1. Insert **Gutenberg Lab** in a post.  
-2. Change the message text.  
-3. Save, reload the editor — text is still there.  
-4. View the post on the frontend — same message + a live `<time>`.  
-5. Open **Code editor** and see something like:
-
-```html
-<!-- wp:create-block/gutenberg-lab {"message":"Hello lab"} /-->
-```
-
-(No inner HTML — normal for a dynamic block.)  
+1. Insert **Lab Card** in a post.
+2. Add image, title, description, and CTA URL.
+3. Save, reload the editor — content is still there.
+4. View the post on the frontend — card looks correct and the link works.
+5. Open **Code editor** and see a self-closing block comment with JSON attributes (no inner HTML).
 6. Explain out loud: *“Settings are saved in the post; PHP draws what visitors see.”*
 
 ---
