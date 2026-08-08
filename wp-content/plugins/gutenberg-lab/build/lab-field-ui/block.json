@@ -14,7 +14,8 @@
     "lab"
   ],
   "parent": [
-    "create-block/lab-fields-ui"
+    "create-block/lab-fields-ui",
+    "create-block/lab-repeater-row"
   ],
   "attributes": {
     "fieldType": {

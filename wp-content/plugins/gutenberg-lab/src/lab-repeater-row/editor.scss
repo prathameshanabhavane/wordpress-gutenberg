@@ -1,0 +1,79 @@
+.lab-repeater-row {
+	position: relative;
+	margin: 0 0 1rem;
+	padding: 0.85rem 1rem 1rem;
+	border: 1px dashed #c3c4c7;
+	border-radius: 0.5rem;
+	background: #fcfcfc;
+}
+
+.lab-repeater-row__title {
+	margin: 0 0 0.65rem;
+	font-size: 0.8rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: #1e1e1e;
+}
+
+.lab-repeater-row__hint {
+	font-weight: 400;
+	text-transform: none;
+	letter-spacing: 0;
+	color: #646970;
+}
+
+/* Space between "Add field" label and the + button only */
+.lab-repeater-row .lab-repeater-row__fields > .block-list-appender,
+.lab-repeater-row .lab-repeater-row__appender {
+	position: static !important;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: end;
+	-ms-flex-align: end;
+	align-items: flex-end;
+	width: 100%;
+	margin: 0.75rem 0 0;
+	gap: 0.4rem;
+}
+
+.lab-repeater-row .block-list-appender {
+	position: static !important;
+	width: auto;
+	margin-top: 0;
+	margin-left: auto;
+}
+
+.lab-repeater-row .block-editor-button-block-appender {
+	display: -webkit-box !important;
+	display: -ms-flexbox !important;
+	display: flex !important;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 36px !important;
+	min-width: 36px;
+	min-height: 36px;
+	margin: 0;
+	box-shadow: inset 0 0 0 1px #c3c4c7;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.lab-repeater-row__appender-label {
+	display: block;
+	margin: 0;
+	font-size: 0.72rem;
+	font-weight: 600;
+	line-height: 1.2;
+	color: #646970;
+	text-align: right;
+}

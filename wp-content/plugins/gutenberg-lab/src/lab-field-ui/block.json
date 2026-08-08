@@ -8,7 +8,7 @@
 	"icon": "text",
 	"description": "One display row. Set type and value in admin; frontend shows content only.",
 	"keywords": [ "display", "field", "ui", "lab" ],
-	"parent": [ "create-block/lab-fields-ui" ],
+	"parent": [ "create-block/lab-fields-ui", "create-block/lab-repeater-row" ],
 	"attributes": {
 		"fieldType": {
 			"type": "string",

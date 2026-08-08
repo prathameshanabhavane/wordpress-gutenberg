@@ -154,7 +154,8 @@ return array(
 			'lab'
 		),
 		'parent' => array(
-			'create-block/lab-fields-ui'
+			'create-block/lab-fields-ui',
+			'create-block/lab-repeater-row'
 		),
 		'attributes' => array(
 			'fieldType' => array(
@@ -420,6 +421,79 @@ return array(
 			'align' => array(
 				'wide'
 			)
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-repeater' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-repeater',
+		'version' => '0.1.0',
+		'title' => 'Lab Repeater',
+		'category' => 'widgets',
+		'icon' => 'table-row-after',
+		'description' => 'ACF-style repeater: add rows, each row holds Lab Field UI sub fields.',
+		'keywords' => array(
+			'repeater',
+			'acf',
+			'rows',
+			'fields',
+			'lab'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-repeater-row'
+		),
+		'attributes' => array(
+			'buttonLabel' => array(
+				'type' => 'string',
+				'default' => 'Add Row'
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'align' => array(
+				'wide'
+			)
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-repeater-row' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-repeater-row',
+		'version' => '0.1.0',
+		'title' => 'Lab Repeater Row',
+		'category' => 'widgets',
+		'icon' => 'editor-ul',
+		'description' => 'One repeater row. Add Lab Field UI sub fields inside.',
+		'keywords' => array(
+			'row',
+			'repeater',
+			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-repeater'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-field-ui'
+		),
+		'attributes' => array(
+			'rowLabel' => array(
+				'type' => 'string',
+				'default' => ''
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'reusable' => false
 		),
 		'textdomain' => 'gutenberg-lab',
 		'editorScript' => 'file:./index.js',

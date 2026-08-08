@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-repeater-row",
+  "version": "0.1.0",
+  "title": "Lab Repeater Row",
+  "category": "widgets",
+  "icon": "editor-ul",
+  "description": "One repeater row. Add Lab Field UI sub fields inside.",
+  "keywords": [
+    "row",
+    "repeater",
+    "lab"
+  ],
+  "parent": [
+    "create-block/lab-repeater"
+  ],
+  "allowedBlocks": [
+    "create-block/lab-field-ui"
+  ],
+  "attributes": {
+    "rowLabel": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

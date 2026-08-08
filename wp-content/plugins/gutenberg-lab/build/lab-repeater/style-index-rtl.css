@@ -1,0 +1,57 @@
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/lab-repeater/style.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+/**
+ * Lab Repeater — frontend shell (ACF-style rows).
+ */
+.wp-block-create-block-lab-repeater.lab-repeater,
+.lab-repeater.wp-block-create-block-lab-repeater {
+  --lab-rep-bg: #ffffff;
+  --lab-rep-border: #e5e5e5;
+  --lab-rep-fg: #0a0a0a;
+  --lab-rep-muted: #737373;
+  --lab-rep-radius: 0.75rem;
+  --lab-rep-pad: 1.25rem;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--lab-rep-pad);
+  border: 1px solid var(--lab-rep-border);
+  border-radius: var(--lab-rep-radius);
+  background: var(--lab-rep-bg);
+  color: var(--lab-rep-fg);
+  font: inherit;
+}
+
+.lab-repeater__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.lab-repeater__row {
+  margin: 0 0 1.25rem;
+  padding: 0 0 1.25rem;
+  border-bottom: 1px solid var(--lab-rep-border);
+}
+
+.lab-repeater__row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.lab-repeater__row-fields > * {
+  margin: 0 0 0.85rem;
+}
+
+.lab-repeater__row-fields > *:last-child {
+  margin-bottom: 0;
+}
+
+.lab-repeater__empty {
+  margin: 0;
+  color: var(--lab-rep-muted);
+  font-style: italic;
+}

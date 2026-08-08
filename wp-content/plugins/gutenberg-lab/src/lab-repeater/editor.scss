@@ -1,0 +1,67 @@
+/**
+ * Editor chrome for Lab Repeater.
+ * Keep + appenders in normal flow (nested InnerBlocks otherwise overlap).
+ */
+.lab-repeater__hint {
+	margin: 0 0 0.75rem;
+	color: #646970;
+	font-size: 0.85rem;
+}
+
+.lab-repeater {
+	margin-top: 20px !important;
+}
+
+.lab-repeater .lab-repeater__rows > .block-list-appender,
+.lab-repeater .lab-repeater__appender {
+	position: static !important;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: end;
+	-ms-flex-align: end;
+	align-items: flex-end;
+	width: 100%;
+	margin: 0.85rem 0 0;
+	gap: 0.4rem;
+}
+
+.lab-repeater .block-list-appender {
+	position: static !important;
+	width: auto;
+	margin-top: 0;
+	margin-left: auto;
+}
+
+.lab-repeater .block-editor-button-block-appender {
+	display: -webkit-box !important;
+	display: -ms-flexbox !important;
+	display: flex !important;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 36px !important;
+	min-width: 36px;
+	min-height: 36px;
+	margin: 0;
+	box-shadow: inset 0 0 0 1px #c3c4c7;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.lab-repeater__appender-label {
+	display: block;
+	margin: 0;
+	font-size: 0.75rem;
+	font-weight: 600;
+	line-height: 1.2;
+	color: #646970;
+	text-align: right;
+}

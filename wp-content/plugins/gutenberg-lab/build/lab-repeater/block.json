@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-repeater",
+  "version": "0.1.0",
+  "title": "Lab Repeater",
+  "category": "widgets",
+  "icon": "table-row-after",
+  "description": "ACF-style repeater: add rows, each row holds Lab Field UI sub fields.",
+  "keywords": [
+    "repeater",
+    "acf",
+    "rows",
+    "fields",
+    "lab"
+  ],
+  "allowedBlocks": [
+    "create-block/lab-repeater-row"
+  ],
+  "attributes": {
+    "buttonLabel": {
+      "type": "string",
+      "default": "Add Row"
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [
+      "wide"
+    ]
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

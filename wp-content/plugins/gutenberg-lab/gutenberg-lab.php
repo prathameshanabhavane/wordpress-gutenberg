@@ -30,7 +30,16 @@ function create_block_gutenberg_lab_block_init() {
 	}
 
 	// Fallback: register each built block folder.
-	$blocks = array( 'lab-cards', 'lab-card', 'lab-form-fields', 'lab-form-field', 'lab-fields-ui', 'lab-field-ui' );
+	$blocks = array(
+		'lab-cards',
+		'lab-card',
+		'lab-form-fields',
+		'lab-form-field',
+		'lab-fields-ui',
+		'lab-field-ui',
+		'lab-repeater',
+		'lab-repeater-row',
+	);
 	foreach ( $blocks as $block ) {
 		$block_path = __DIR__ . '/build/' . $block;
 		if ( file_exists( $block_path . '/block.json' ) ) {
