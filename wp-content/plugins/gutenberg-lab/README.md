@@ -1,18 +1,28 @@
 # Gutenberg Lab
 
-Local learning plugin for the WordPress block editor.
+A beginner-friendly learning plugin for the **WordPress block editor (Gutenberg)**.
 
-**Start here:** [docs/README.md](./docs/README.md)
+You do not need to be a WordPress expert. The docs start from the basics (admin vs frontend, what a plugin is) and then walk through architecture, flow, and each file with tests and debugging.
 
-Step-by-step guides with simple examples, analogies, and how to test/debug each layer (`block.json` → `edit` → `save` → `render.php` → build).
+## Start here
+
+Open **[docs/README.md](./docs/README.md)** and read the steps in order:
+
+0. WordPress basics  
+1. Architecture and flow (big picture)  
+2. Plugin registration  
+3. `block.json`  
+4. `edit.js`  
+5. `save.js`  
+6. `render.php`  
+7. Build (`src/` → `build/`)  
+8. Debug cheatsheet  
 
 ## Official resources
 
-Use these alongside the lab docs — they answer different questions:
-
 | Resource | Use it for |
 |----------|------------|
-| [Block Editor Reference Guides](https://developer.wordpress.org/block-editor/reference-guides/) | Block API, attributes, edit/save, hooks, SlotFills, theme.json, data stores |
-| [Gutenberg Storybook](https://wordpress.github.io/gutenberg/?path=/docs/introduction--page) | Live UI components (`Button`, `Panel`, form controls) and their props |
+| [Block Editor Reference Guides](https://developer.wordpress.org/block-editor/reference-guides/) | How blocks work (API, attributes, edit/save, hooks, data) |
+| [Gutenberg Storybook](https://wordpress.github.io/gutenberg/?path=/docs/introduction--page) | Live UI components for the editor (`Button`, `Panel`, controls) |
 
-**Rule of thumb:** Reference Guides = *how blocks work*. Storybook = *what controls to put in the editor UI*.
+**Rule of thumb:** Reference Guides = architecture & API. Storybook = editor UI building blocks.
