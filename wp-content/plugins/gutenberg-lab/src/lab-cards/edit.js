@@ -26,7 +26,7 @@ const TEMPLATE = [
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { columns } = attributes;
+	const columns = attributes.columns ?? 3;
 
 	const blockProps = useBlockProps( {
 		className: `lab-cards lab-cards--columns-${ columns }`,

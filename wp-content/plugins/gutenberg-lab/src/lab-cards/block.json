@@ -8,6 +8,7 @@
 	"icon": "grid-view",
 	"description": "A repeating grid of Lab Cards. Click + to add as many cards as you want.",
 	"keywords": [ "cards", "grid", "loop", "repeater", "lab" ],
+	"allowedBlocks": [ "create-block/lab-card" ],
 	"attributes": {
 		"columns": {
 			"type": "number",

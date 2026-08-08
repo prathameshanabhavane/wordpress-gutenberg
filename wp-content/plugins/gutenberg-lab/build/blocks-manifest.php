@@ -85,6 +85,9 @@ return array(
 			'repeater',
 			'lab'
 		),
+		'allowedBlocks' => array(
+			'create-block/lab-card'
+		),
 		'attributes' => array(
 			'columns' => array(
 				'type' => 'number',
