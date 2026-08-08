@@ -1,19 +1,20 @@
 /**
- * Editor-only — single Lab Form Field.
+ * Editor-only helpers (type picker / preview chrome).
+ * Frontend control look lives in style.scss (CSS variables).
  */
 
 .lab-form-field__type-picker {
 	margin-bottom: 0.75rem;
 	padding-bottom: 0.75rem;
-	border-bottom: 1px solid #f0f0f1;
+	border-bottom: 1px solid #dcdcde;
 }
 
-.lab-form-field__control {
-	margin-bottom: 0.75rem;
+.lab-form-field__control-wrap {
+	margin-bottom: 0.5rem;
 }
 
 .lab-form-field__preview-line {
-	margin: 0;
+	margin: 0.5rem 0 0;
 	padding-top: 0.5rem;
 	border-top: 1px dashed #dcdcde;
 	color: #646970;

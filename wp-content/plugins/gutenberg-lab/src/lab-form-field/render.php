@@ -3,6 +3,9 @@
  * Frontend: render the SAME control type chosen in admin
  * (text → input, select → select, checkbox → checkbox, etc.).
  *
+ * Markup uses real form controls + CSS hooks so styles stay custom
+ * and consistent across Chrome, Firefox, Safari, and Edge.
+ *
  * @var array $attributes Block attributes.
  */
 
@@ -56,7 +59,7 @@ $wrapper = get_block_wrapper_attributes(
 				<?php echo esc_html( $display_label ); ?>
 			</label>
 			<textarea
-				class="lab-form-field__control"
+				class="lab-form-field__control lab-form-field__control--textarea"
 				id="<?php echo esc_attr( $field_id ); ?>"
 				name="<?php echo esc_attr( $field_name ); ?>"
 				rows="4"
@@ -67,53 +70,109 @@ $wrapper = get_block_wrapper_attributes(
 		case 'toggle':
 			$checked = ! empty( $attributes['toggleValue'] );
 			?>
-			<label class="lab-form-field__label lab-form-field__label--inline" for="<?php echo esc_attr( $field_id ); ?>">
+			<label class="lab-form-field__option" for="<?php echo esc_attr( $field_id ); ?>">
 				<input
-					class="lab-form-field__control lab-form-field__control--toggle"
+					class="lab-form-field__native"
 					type="checkbox"
 					id="<?php echo esc_attr( $field_id ); ?>"
 					name="<?php echo esc_attr( $field_name ); ?>"
 					value="1"
 					<?php checked( $checked ); ?>
 				/>
-				<span><?php echo esc_html( $display_label ); ?></span>
+				<span class="lab-form-field__switch" aria-hidden="true">
+					<span class="lab-form-field__switch-thumb"></span>
+				</span>
+				<span class="lab-form-field__option-text"><?php echo esc_html( $display_label ); ?></span>
 			</label>
 			<?php
 			break;
 
 		case 'select':
-			$selected = $attributes['selectValue'] ?? 'option-a';
+			$selected       = $attributes['selectValue'] ?? 'option-a';
+			if ( ! isset( $select_options[ $selected ] ) ) {
+				$selected = 'option-a';
+			}
+			$selected_label = $select_options[ $selected ];
+			$list_id        = $field_id . '-list';
 			?>
-			<label class="lab-form-field__label" for="<?php echo esc_attr( $field_id ); ?>">
+			<span class="lab-form-field__label" id="<?php echo esc_attr( $field_id ); ?>-label">
 				<?php echo esc_html( $display_label ); ?>
-			</label>
-			<select
-				class="lab-form-field__control"
-				id="<?php echo esc_attr( $field_id ); ?>"
-				name="<?php echo esc_attr( $field_name ); ?>"
-			>
-				<?php foreach ( $select_options as $value => $opt_label ) : ?>
-					<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $selected, $value ); ?>>
-						<?php echo esc_html( $opt_label ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
+			</span>
+			<div class="lab-form-field__custom-select" data-lab-select>
+				<?php /* Native <select> = no-JS / progressive-enhancement fallback */ ?>
+				<select
+					class="lab-form-field__fallback-select"
+					id="<?php echo esc_attr( $field_id ); ?>"
+					name="<?php echo esc_attr( $field_name ); ?>"
+					aria-labelledby="<?php echo esc_attr( $field_id ); ?>-label"
+				>
+					<?php foreach ( $select_options as $value => $opt_label ) : ?>
+						<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $selected, $value ); ?>>
+							<?php echo esc_html( $opt_label ); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+
+				<?php /* Custom UI (activated by view.js — same look in all browsers) */ ?>
+				<div class="lab-form-field__select-ui" hidden>
+					<input
+						type="hidden"
+						class="lab-form-field__select-input"
+						value="<?php echo esc_attr( $selected ); ?>"
+						disabled
+					/>
+					<button
+						type="button"
+						class="lab-form-field__select-trigger"
+						aria-haspopup="listbox"
+						aria-expanded="false"
+						aria-controls="<?php echo esc_attr( $list_id ); ?>"
+						aria-labelledby="<?php echo esc_attr( $field_id ); ?>-label <?php echo esc_attr( $field_id ); ?>-value"
+					>
+						<span class="lab-form-field__select-value" id="<?php echo esc_attr( $field_id ); ?>-value">
+							<?php echo esc_html( $selected_label ); ?>
+						</span>
+						<span class="lab-form-field__select-chevron" aria-hidden="true"></span>
+					</button>
+					<ul
+						class="lab-form-field__select-list"
+						id="<?php echo esc_attr( $list_id ); ?>"
+						role="listbox"
+						aria-labelledby="<?php echo esc_attr( $field_id ); ?>-label"
+						hidden
+					>
+						<?php foreach ( $select_options as $value => $opt_label ) : ?>
+							<li
+								class="lab-form-field__select-option"
+								role="option"
+								tabindex="-1"
+								data-value="<?php echo esc_attr( $value ); ?>"
+								aria-selected="<?php echo $selected === $value ? 'true' : 'false'; ?>"
+							>
+								<span class="lab-form-field__select-option-label"><?php echo esc_html( $opt_label ); ?></span>
+								<span class="lab-form-field__select-option-check" aria-hidden="true"></span>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			</div>
 			<?php
 			break;
 
 		case 'checkbox':
 			$checked = ! empty( $attributes['checkboxValue'] );
 			?>
-			<label class="lab-form-field__label lab-form-field__label--inline" for="<?php echo esc_attr( $field_id ); ?>">
+			<label class="lab-form-field__option" for="<?php echo esc_attr( $field_id ); ?>">
 				<input
-					class="lab-form-field__control"
+					class="lab-form-field__native"
 					type="checkbox"
 					id="<?php echo esc_attr( $field_id ); ?>"
 					name="<?php echo esc_attr( $field_name ); ?>"
 					value="1"
 					<?php checked( $checked ); ?>
 				/>
-				<span><?php echo esc_html( $display_label ); ?></span>
+				<span class="lab-form-field__box" aria-hidden="true"></span>
+				<span class="lab-form-field__option-text"><?php echo esc_html( $display_label ); ?></span>
 			</label>
 			<?php
 			break;
@@ -121,20 +180,27 @@ $wrapper = get_block_wrapper_attributes(
 		case 'radio':
 			$selected = $attributes['radioValue'] ?? 'red';
 			?>
-			<span class="lab-form-field__label"><?php echo esc_html( $display_label ); ?></span>
-			<div class="lab-form-field__radio-group" role="radiogroup" aria-label="<?php echo esc_attr( $display_label ); ?>">
+			<span class="lab-form-field__label" id="<?php echo esc_attr( $field_id ); ?>-legend">
+				<?php echo esc_html( $display_label ); ?>
+			</span>
+			<div
+				class="lab-form-field__radio-group"
+				role="radiogroup"
+				aria-labelledby="<?php echo esc_attr( $field_id ); ?>-legend"
+			>
 				<?php foreach ( $radio_options as $value => $opt_label ) : ?>
 					<?php $radio_id = $field_id . '-' . sanitize_html_class( $value ); ?>
-					<label class="lab-form-field__label lab-form-field__label--inline" for="<?php echo esc_attr( $radio_id ); ?>">
+					<label class="lab-form-field__option" for="<?php echo esc_attr( $radio_id ); ?>">
 						<input
-							class="lab-form-field__control"
+							class="lab-form-field__native"
 							type="radio"
 							id="<?php echo esc_attr( $radio_id ); ?>"
 							name="<?php echo esc_attr( $field_name ); ?>"
 							value="<?php echo esc_attr( $value ); ?>"
 							<?php checked( $selected, $value ); ?>
 						/>
-						<span><?php echo esc_html( $opt_label ); ?></span>
+						<span class="lab-form-field__radio" aria-hidden="true"></span>
+						<span class="lab-form-field__option-text"><?php echo esc_html( $opt_label ); ?></span>
 					</label>
 				<?php endforeach; ?>
 			</div>
@@ -170,8 +236,15 @@ $wrapper = get_block_wrapper_attributes(
 			<label class="lab-form-field__label" for="<?php echo esc_attr( $field_id ); ?>">
 				<?php echo esc_html( $display_label ); ?>
 			</label>
+			<?php if ( ! empty( $tokens ) ) : ?>
+				<ul class="lab-form-field__tokens" aria-hidden="true">
+					<?php foreach ( $tokens as $token ) : ?>
+						<li class="lab-form-field__token"><?php echo esc_html( (string) $token ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
 			<input
-				class="lab-form-field__control"
+				class="lab-form-field__control lab-form-field__control--text"
 				type="text"
 				id="<?php echo esc_attr( $field_id ); ?>"
 				name="<?php echo esc_attr( $field_name ); ?>"
@@ -186,18 +259,60 @@ $wrapper = get_block_wrapper_attributes(
 			$alt = $attributes['imageAlt'] ?? '';
 			?>
 			<span class="lab-form-field__label"><?php echo esc_html( $display_label ); ?></span>
-			<?php if ( $url ) : ?>
-				<figure class="lab-form-field__figure">
-					<img
-						class="lab-form-field__thumb"
-						src="<?php echo esc_url( $url ); ?>"
-						alt="<?php echo esc_attr( $alt ); ?>"
-						loading="lazy"
-					/>
-				</figure>
-			<?php else : ?>
-				<p class="lab-form-field__empty"><?php echo esc_html__( 'No image selected.', 'gutenberg-lab' ); ?></p>
-			<?php endif; ?>
+			<div class="lab-form-field__upload" data-lab-upload="image">
+				<?php if ( $url ) : ?>
+					<figure class="lab-form-field__upload-preview is-visible">
+						<img
+							class="lab-form-field__upload-thumb"
+							src="<?php echo esc_url( $url ); ?>"
+							alt="<?php echo esc_attr( $alt ); ?>"
+							loading="lazy"
+						/>
+						<span class="lab-form-field__upload-meta">
+							<span class="lab-form-field__upload-name">
+								<?php echo esc_html( $alt !== '' ? $alt : __( 'Selected image', 'gutenberg-lab' ) ); ?>
+							</span>
+							<span class="lab-form-field__upload-sub">
+								<?php echo esc_html__( 'Image ready', 'gutenberg-lab' ); ?>
+							</span>
+						</span>
+					</figure>
+				<?php else : ?>
+					<label class="lab-form-field__dropzone" for="<?php echo esc_attr( $field_id ); ?>">
+						<input
+							class="lab-form-field__native-file"
+							type="file"
+							id="<?php echo esc_attr( $field_id ); ?>"
+							name="<?php echo esc_attr( $field_name ); ?>"
+							accept="image/*"
+						/>
+						<span class="lab-form-field__dropzone-visual" aria-hidden="true">
+							<span class="lab-form-field__dropzone-icon lab-form-field__dropzone-icon--image"></span>
+						</span>
+						<span class="lab-form-field__dropzone-copy">
+							<span class="lab-form-field__dropzone-title">
+								<?php echo esc_html__( 'Click to upload image', 'gutenberg-lab' ); ?>
+							</span>
+							<span class="lab-form-field__dropzone-hint">
+								<?php echo esc_html__( 'PNG, JPG, or WebP', 'gutenberg-lab' ); ?>
+							</span>
+						</span>
+						<span class="lab-form-field__dropzone-btn">
+							<?php echo esc_html__( 'Browse', 'gutenberg-lab' ); ?>
+						</span>
+					</label>
+					<div class="lab-form-field__upload-preview" hidden>
+						<img class="lab-form-field__upload-thumb" alt="" />
+						<span class="lab-form-field__upload-meta">
+							<span class="lab-form-field__upload-name"></span>
+							<span class="lab-form-field__upload-sub"></span>
+						</span>
+						<button type="button" class="lab-form-field__upload-change">
+							<?php echo esc_html__( 'Change', 'gutenberg-lab' ); ?>
+						</button>
+					</div>
+				<?php endif; ?>
+			</div>
 			<?php
 			break;
 
@@ -206,15 +321,57 @@ $wrapper = get_block_wrapper_attributes(
 			$name = $attributes['fileName'] ?? '';
 			?>
 			<span class="lab-form-field__label"><?php echo esc_html( $display_label ); ?></span>
-			<?php if ( $url ) : ?>
-				<p class="lab-form-field__file">
-					<a href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer">
-						<?php echo esc_html( $name !== '' ? $name : __( 'Download file', 'gutenberg-lab' ) ); ?>
+			<div class="lab-form-field__upload" data-lab-upload="file">
+				<?php if ( $url ) : ?>
+					<a class="lab-form-field__upload-preview lab-form-field__upload-preview--file is-visible" href="<?php echo esc_url( $url ); ?>" target="_blank" rel="noopener noreferrer">
+						<span class="lab-form-field__upload-file-icon" aria-hidden="true"></span>
+						<span class="lab-form-field__upload-meta">
+							<span class="lab-form-field__upload-name">
+								<?php echo esc_html( $name !== '' ? $name : __( 'Selected file', 'gutenberg-lab' ) ); ?>
+							</span>
+							<span class="lab-form-field__upload-sub">
+								<?php echo esc_html__( 'Click to open', 'gutenberg-lab' ); ?>
+							</span>
+						</span>
+						<span class="lab-form-field__upload-change">
+							<?php echo esc_html__( 'Open', 'gutenberg-lab' ); ?>
+						</span>
 					</a>
-				</p>
-			<?php else : ?>
-				<p class="lab-form-field__empty"><?php echo esc_html__( 'No file selected.', 'gutenberg-lab' ); ?></p>
-			<?php endif; ?>
+				<?php else : ?>
+					<label class="lab-form-field__dropzone" for="<?php echo esc_attr( $field_id ); ?>">
+						<input
+							class="lab-form-field__native-file"
+							type="file"
+							id="<?php echo esc_attr( $field_id ); ?>"
+							name="<?php echo esc_attr( $field_name ); ?>"
+						/>
+						<span class="lab-form-field__dropzone-visual" aria-hidden="true">
+							<span class="lab-form-field__dropzone-icon lab-form-field__dropzone-icon--file"></span>
+						</span>
+						<span class="lab-form-field__dropzone-copy">
+							<span class="lab-form-field__dropzone-title">
+								<?php echo esc_html__( 'Click to upload file', 'gutenberg-lab' ); ?>
+							</span>
+							<span class="lab-form-field__dropzone-hint">
+								<?php echo esc_html__( 'Any file type', 'gutenberg-lab' ); ?>
+							</span>
+						</span>
+						<span class="lab-form-field__dropzone-btn">
+							<?php echo esc_html__( 'Browse', 'gutenberg-lab' ); ?>
+						</span>
+					</label>
+					<div class="lab-form-field__upload-preview lab-form-field__upload-preview--file" hidden>
+						<span class="lab-form-field__upload-file-icon" aria-hidden="true"></span>
+						<span class="lab-form-field__upload-meta">
+							<span class="lab-form-field__upload-name"></span>
+							<span class="lab-form-field__upload-sub"></span>
+						</span>
+						<button type="button" class="lab-form-field__upload-change">
+							<?php echo esc_html__( 'Change', 'gutenberg-lab' ); ?>
+						</button>
+					</div>
+				<?php endif; ?>
+			</div>
 			<?php
 			break;
 
@@ -226,7 +383,7 @@ $wrapper = get_block_wrapper_attributes(
 				<?php echo esc_html( $display_label ); ?>
 			</label>
 			<input
-				class="lab-form-field__control"
+				class="lab-form-field__control lab-form-field__control--text"
 				type="text"
 				id="<?php echo esc_attr( $field_id ); ?>"
 				name="<?php echo esc_attr( $field_name ); ?>"
