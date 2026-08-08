@@ -54,9 +54,26 @@ Child has `"parent": ["create-block/lab-form-fields"]` so it only appears inside
 
 **Note:** Old “all fields in one block” posts may look invalid — insert a fresh Lab Form Fields.
 
-## Checkpoint
+## Frontend = same control type
 
-You can add only the controls you need for a use case, one by one.
+Admin choice is mirrored on the frontend:
+
+| Admin field type | Frontend HTML |
+|------------------|---------------|
+| text | `<input type="text">` |
+| textarea | `<textarea>` |
+| toggle / checkbox | `<input type="checkbox">` |
+| select | `<select><option>…` |
+| radio | `<input type="radio">` group |
+| range | `<input type="range">` |
+| tokens | text input (comma-separated) |
+| image | `<img>` preview |
+| file | download `<a>` |
+
+Values you set in the editor are used as the initial/default state on the frontend.
+The parent wraps fields in a demo `<form>`.
+
+
 
 **Previous:** [10-lab-cards-loop.md](./10-lab-cards-loop.md)  
 **Back to index:** [README.md](./README.md)

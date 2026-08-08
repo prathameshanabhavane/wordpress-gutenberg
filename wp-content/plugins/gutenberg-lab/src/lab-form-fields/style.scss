@@ -16,3 +16,23 @@
 	flex-direction: column;
 	gap: 0.85rem;
 }
+
+.lab-form-fields__form {
+	margin: 0;
+}
+
+.lab-form-fields__actions {
+	margin: 1rem 0 0;
+}
+
+.lab-form-fields__submit {
+	display: inline-block;
+	padding: 0.55rem 1rem;
+	border: 0;
+	border-radius: 4px;
+	background: #1e1e1e;
+	color: #fff;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}

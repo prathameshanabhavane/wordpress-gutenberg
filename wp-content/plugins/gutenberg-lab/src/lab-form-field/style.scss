@@ -1,5 +1,5 @@
 /**
- * Shared styles — single Lab Form Field.
+ * Shared styles — single Lab Form Field (real HTML controls on frontend).
  */
 
 .wp-block-create-block-lab-form-field.lab-form-field,
@@ -26,19 +26,71 @@
 }
 
 .lab-form-field__label {
-	margin: 0 0 0.35rem;
+	display: block;
+	margin: 0 0 0.4rem;
+	font-size: 0.95rem;
+	font-weight: 600;
 }
 
-.lab-form-field__value {
-	font-size: 0.95rem;
-	word-break: break-word;
+.lab-form-field__label--inline {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.lab-form-field__control {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	padding: 0.5rem 0.65rem;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	background: #fff;
+	color: inherit;
+	font: inherit;
+}
+
+.lab-form-field__control--toggle,
+.lab-form-field__label--inline .lab-form-field__control {
+	display: inline-block;
+	width: auto;
+}
+
+.lab-form-field__control--range {
+	padding: 0;
+	border: 0;
+}
+
+.lab-form-field__range-value {
+	margin-left: 0.35rem;
+	font-weight: 500;
+	color: #646970;
+}
+
+.lab-form-field__radio-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
 }
 
 .lab-form-field__thumb {
 	display: block;
-	max-width: 160px;
+	max-width: 220px;
 	height: auto;
 	border-radius: 4px;
+}
+
+.lab-form-field__figure {
+	margin: 0;
+}
+
+.lab-form-field__empty,
+.lab-form-field__file {
+	margin: 0;
+	font-size: 0.95rem;
 }
 
 .lab-form-field__control-label {
