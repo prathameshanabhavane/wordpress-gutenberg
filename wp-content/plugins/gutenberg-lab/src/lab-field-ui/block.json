@@ -1,0 +1,93 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/lab-field-ui",
+	"version": "0.1.0",
+	"title": "Lab Field UI",
+	"category": "widgets",
+	"icon": "text",
+	"description": "One display row. Set type and value in admin; frontend shows content only.",
+	"keywords": [ "display", "field", "ui", "lab" ],
+	"parent": [ "create-block/lab-fields-ui" ],
+	"attributes": {
+		"fieldType": {
+			"type": "string",
+			"default": "text"
+		},
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"textValue": {
+			"type": "string",
+			"default": ""
+		},
+		"textareaValue": {
+			"type": "string",
+			"default": ""
+		},
+		"toggleValue": {
+			"type": "boolean",
+			"default": false
+		},
+		"selectValue": {
+			"type": "string",
+			"default": "option-a"
+		},
+		"checkboxValue": {
+			"type": "array",
+			"default": []
+		},
+		"radioValue": {
+			"type": "string",
+			"default": "option-a"
+		},
+		"options": {
+			"type": "array",
+			"default": [
+				{ "label": "Option A", "value": "option-a" },
+				{ "label": "Option B", "value": "option-b" },
+				{ "label": "Option C", "value": "option-c" }
+			]
+		},
+		"rangeValue": {
+			"type": "number",
+			"default": 40
+		},
+		"tokensValue": {
+			"type": "array",
+			"default": []
+		},
+		"imageId": {
+			"type": "number"
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"fileId": {
+			"type": "number"
+		},
+		"fileUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"fileName": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"textdomain": "gutenberg-lab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

@@ -16,8 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/includes/lab-field-ui-display.php';
+
 /**
- * Register Lab Cards, Lab Card, and Lab Form Fields.
+ * Register Lab Cards, Lab Form Fields, and Lab Fields UI.
  */
 function create_block_gutenberg_lab_block_init() {
 	$manifest = __DIR__ . '/build/blocks-manifest.php';
@@ -28,7 +30,7 @@ function create_block_gutenberg_lab_block_init() {
 	}
 
 	// Fallback: register each built block folder.
-	$blocks = array( 'lab-cards', 'lab-card', 'lab-form-fields', 'lab-form-field' );
+	$blocks = array( 'lab-cards', 'lab-card', 'lab-form-fields', 'lab-form-field', 'lab-fields-ui', 'lab-field-ui' );
 	foreach ( $blocks as $block ) {
 		$block_path = __DIR__ . '/build/' . $block;
 		if ( file_exists( $block_path . '/block.json' ) ) {

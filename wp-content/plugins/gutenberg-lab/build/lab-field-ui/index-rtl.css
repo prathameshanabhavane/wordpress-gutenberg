@@ -1,0 +1,57 @@
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/lab-field-ui/editor.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
+/**
+ * Editor helpers for Lab Field UI.
+ */
+.lab-field-ui__type-picker {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #dcdcde;
+}
+
+.lab-field-ui__choices-help {
+  margin: 0 0 0.75rem;
+  color: #646970;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.lab-field-ui__choice-row {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dcdcde;
+}
+
+.lab-field-ui__choice-row .components-base-control {
+  margin-bottom: 0.25rem;
+}
+
+.lab-field-ui__preview-line {
+  margin: 0.5rem 0 0;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #dcdcde;
+  color: #646970;
+  font-size: 0.85rem;
+}
+
+.lab-field-ui__media img,
+.lab-field-ui__thumb {
+  display: block;
+  max-width: 160px;
+  height: auto;
+  margin-top: 0.35rem;
+}
+
+.lab-field-ui__checkbox-group .components-base-control {
+  margin-bottom: 0.35rem;
+}
+
+.lab-field-ui__control-label {
+  margin: 0 0 0.5rem;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #646970;
+}

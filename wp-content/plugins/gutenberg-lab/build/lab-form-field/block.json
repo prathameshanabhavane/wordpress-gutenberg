@@ -42,12 +42,29 @@
       "default": "option-a"
     },
     "checkboxValue": {
-      "type": "boolean",
-      "default": false
+      "type": "array",
+      "default": []
     },
     "radioValue": {
       "type": "string",
-      "default": "red"
+      "default": "option-a"
+    },
+    "options": {
+      "type": "array",
+      "default": [
+        {
+          "label": "Option A",
+          "value": "option-a"
+        },
+        {
+          "label": "Option B",
+          "value": "option-b"
+        },
+        {
+          "label": "Option C",
+          "value": "option-c"
+        }
+      ]
     },
     "rangeValue": {
       "type": "number",

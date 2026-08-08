@@ -8,7 +8,7 @@ export const FIELD_TYPES = [
 	{ label: __( 'Textarea', 'gutenberg-lab' ), value: 'textarea' },
 	{ label: __( 'Toggle', 'gutenberg-lab' ), value: 'toggle' },
 	{ label: __( 'Select', 'gutenberg-lab' ), value: 'select' },
-	{ label: __( 'Checkbox', 'gutenberg-lab' ), value: 'checkbox' },
+	{ label: __( 'Checkbox group', 'gutenberg-lab' ), value: 'checkbox' },
 	{ label: __( 'Radio', 'gutenberg-lab' ), value: 'radio' },
 	{ label: __( 'Range', 'gutenberg-lab' ), value: 'range' },
 	{ label: __( 'Tokens (tags)', 'gutenberg-lab' ), value: 'tokens' },

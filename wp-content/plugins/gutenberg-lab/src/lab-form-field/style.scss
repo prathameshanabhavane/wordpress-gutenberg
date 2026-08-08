@@ -466,7 +466,8 @@
 }
 
 /* Radio indicator (shadcn-like) */
-.lab-form-field__radio-group {
+.lab-form-field__radio-group,
+.lab-form-field__checkbox-group {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -476,11 +477,13 @@
 	flex-direction: column;
 }
 
-.lab-form-field__radio-group > .lab-form-field__option {
+.lab-form-field__radio-group > .lab-form-field__option,
+.lab-form-field__checkbox-group > .lab-form-field__option {
 	margin-bottom: 0.65rem;
 }
 
-.lab-form-field__radio-group > .lab-form-field__option:last-child {
+.lab-form-field__radio-group > .lab-form-field__option:last-child,
+.lab-form-field__checkbox-group > .lab-form-field__option:last-child {
 	margin-bottom: 0;
 }
 

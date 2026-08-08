@@ -138,6 +138,150 @@ return array(
 		'style' => 'file:./style-index.css',
 		'render' => 'file:./render.php'
 	),
+	'lab-field-ui' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-field-ui',
+		'version' => '0.1.0',
+		'title' => 'Lab Field UI',
+		'category' => 'widgets',
+		'icon' => 'text',
+		'description' => 'One display row. Set type and value in admin; frontend shows content only.',
+		'keywords' => array(
+			'display',
+			'field',
+			'ui',
+			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-fields-ui'
+		),
+		'attributes' => array(
+			'fieldType' => array(
+				'type' => 'string',
+				'default' => 'text'
+			),
+			'label' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'textValue' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'textareaValue' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'toggleValue' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'selectValue' => array(
+				'type' => 'string',
+				'default' => 'option-a'
+			),
+			'checkboxValue' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'radioValue' => array(
+				'type' => 'string',
+				'default' => 'option-a'
+			),
+			'options' => array(
+				'type' => 'array',
+				'default' => array(
+					array(
+						'label' => 'Option A',
+						'value' => 'option-a'
+					),
+					array(
+						'label' => 'Option B',
+						'value' => 'option-b'
+					),
+					array(
+						'label' => 'Option C',
+						'value' => 'option-c'
+					)
+				)
+			),
+			'rangeValue' => array(
+				'type' => 'number',
+				'default' => 40
+			),
+			'tokensValue' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'imageId' => array(
+				'type' => 'number'
+			),
+			'imageUrl' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'imageAlt' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'fileId' => array(
+				'type' => 'number'
+			),
+			'fileUrl' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'fileName' => array(
+				'type' => 'string',
+				'default' => ''
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-fields-ui' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-fields-ui',
+		'version' => '0.1.0',
+		'title' => 'Lab Fields UI',
+		'category' => 'widgets',
+		'icon' => 'visibility',
+		'description' => 'Display-only field rows. Configure values in the editor; frontend shows content, not form controls.',
+		'keywords' => array(
+			'display',
+			'fields',
+			'ui',
+			'content',
+			'lab'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-field-ui'
+		),
+		'supports' => array(
+			'html' => false,
+			'align' => array(
+				'wide'
+			)
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
 	'lab-form-field' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
@@ -182,12 +326,31 @@ return array(
 				'default' => 'option-a'
 			),
 			'checkboxValue' => array(
-				'type' => 'boolean',
-				'default' => false
+				'type' => 'array',
+				'default' => array(
+					
+				)
 			),
 			'radioValue' => array(
 				'type' => 'string',
-				'default' => 'red'
+				'default' => 'option-a'
+			),
+			'options' => array(
+				'type' => 'array',
+				'default' => array(
+					array(
+						'label' => 'Option A',
+						'value' => 'option-a'
+					),
+					array(
+						'label' => 'Option B',
+						'value' => 'option-b'
+					),
+					array(
+						'label' => 'Option C',
+						'value' => 'option-c'
+					)
+				)
 			),
 			'rangeValue' => array(
 				'type' => 'number',

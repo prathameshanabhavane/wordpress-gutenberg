@@ -1,5 +1,6 @@
 /**
  * Single Lab Form Field — pick a type, edit only that control.
+ * Select / Radio choices are editable from the sidebar.
  */
 import { __ } from '@wordpress/i18n';
 import {
@@ -25,16 +26,10 @@ import { useSelect } from '@wordpress/data';
 import './editor.scss';
 import { FIELD_TYPES, TYPE_LABELS } from './field-types';
 
-const SELECT_OPTIONS = [
+const DEFAULT_OPTIONS = [
 	{ label: __( 'Option A', 'gutenberg-lab' ), value: 'option-a' },
 	{ label: __( 'Option B', 'gutenberg-lab' ), value: 'option-b' },
 	{ label: __( 'Option C', 'gutenberg-lab' ), value: 'option-c' },
-];
-
-const RADIO_OPTIONS = [
-	{ label: __( 'Red', 'gutenberg-lab' ), value: 'red' },
-	{ label: __( 'Green', 'gutenberg-lab' ), value: 'green' },
-	{ label: __( 'Blue', 'gutenberg-lab' ), value: 'blue' },
 ];
 
 const TOKEN_SUGGESTIONS = [
@@ -45,6 +40,45 @@ const TOKEN_SUGGESTIONS = [
 	'CSS',
 	'JavaScript',
 ];
+
+/**
+ * Turn a label into a stable option value.
+ *
+ * @param {string} label
+ * @param {number} index
+ * @return {string} Slug value.
+ */
+function slugifyOptionValue( label, index ) {
+	const base = String( label || '' )
+		.toLowerCase()
+		.trim()
+		.replace( /[^a-z0-9]+/g, '-' )
+		.replace( /^-+|-+$/g, '' );
+	return base || `option-${ index + 1 }`;
+}
+
+/**
+ * Normalize stored options for SelectControl / RadioControl / frontend.
+ *
+ * @param {Array} options
+ * @return {Array<{label:string,value:string}>} Options.
+ */
+function normalizeOptions( options ) {
+	if ( ! Array.isArray( options ) || ! options.length ) {
+		return DEFAULT_OPTIONS.map( ( item ) => ( { ...item } ) );
+	}
+	return options.map( ( item, index ) => {
+		const label =
+			typeof item?.label === 'string' && item.label.trim() !== ''
+				? item.label
+				: `Option ${ index + 1 }`;
+		const value =
+			typeof item?.value === 'string' && item.value.trim() !== ''
+				? item.value
+				: slugifyOptionValue( label, index );
+		return { label, value };
+	} );
+}
 
 /**
  * @param {Object}   props
@@ -62,6 +96,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		selectValue,
 		checkboxValue,
 		radioValue,
+		options,
 		rangeValue,
 		tokensValue,
 		imageId,
@@ -81,8 +116,74 @@ export default function Edit( { attributes, setAttributes } ) {
 		[ imageId ]
 	);
 
+	const choiceOptions = normalizeOptions( options );
+	const needsChoices =
+		fieldType === 'select' ||
+		fieldType === 'radio' ||
+		fieldType === 'checkbox';
 	const fieldLabel =
 		label || TYPE_LABELS[ fieldType ] || __( 'Field', 'gutenberg-lab' );
+
+	const selectedChecks = Array.isArray( checkboxValue )
+		? checkboxValue
+		: checkboxValue
+		? [ choiceOptions[ 0 ]?.value ].filter( Boolean )
+		: [];
+
+	const updateOptions = ( nextOptions ) => {
+		const normalized = normalizeOptions( nextOptions );
+		const patch = { options: normalized };
+		if ( fieldType === 'select' ) {
+			const values = normalized.map( ( item ) => item.value );
+			if ( ! values.includes( selectValue ) ) {
+				patch.selectValue = values[ 0 ] || '';
+			}
+		}
+		if ( fieldType === 'radio' ) {
+			const values = normalized.map( ( item ) => item.value );
+			if ( ! values.includes( radioValue ) ) {
+				patch.radioValue = values[ 0 ] || '';
+			}
+		}
+		if ( fieldType === 'checkbox' ) {
+			const values = normalized.map( ( item ) => item.value );
+			patch.checkboxValue = selectedChecks.filter( ( value ) =>
+				values.includes( value )
+			);
+		}
+		setAttributes( patch );
+	};
+
+	const onAddOption = () => {
+		const nextIndex = choiceOptions.length;
+		updateOptions( [
+			...choiceOptions,
+			{
+				label: `Option ${ nextIndex + 1 }`,
+				value: `option-${ nextIndex + 1 }`,
+			},
+		] );
+	};
+
+	const onUpdateOptionLabel = ( index, nextLabel ) => {
+		const next = choiceOptions.map( ( item, i ) => {
+			if ( i !== index ) {
+				return item;
+			}
+			return {
+				label: nextLabel,
+				value: slugifyOptionValue( nextLabel, index ),
+			};
+		} );
+		updateOptions( next );
+	};
+
+	const onRemoveOption = ( index ) => {
+		if ( choiceOptions.length <= 1 ) {
+			return;
+		}
+		updateOptions( choiceOptions.filter( ( _, i ) => i !== index ) );
+	};
 
 	const onSelectImage = ( media ) => {
 		setAttributes( {
@@ -117,11 +218,27 @@ export default function Edit( { attributes, setAttributes } ) {
 	};
 
 	const onChangeFieldType = ( value ) => {
-		setAttributes( {
-			fieldType: value,
-			// Reset label so badge/control use the new type name.
-			label: '',
-		} );
+		const next = { fieldType: value, label: '' };
+		if (
+			( value === 'select' ||
+				value === 'radio' ||
+				value === 'checkbox' ) &&
+			! options?.length
+		) {
+			next.options = DEFAULT_OPTIONS.map( ( item ) => ( { ...item } ) );
+		}
+		if ( value === 'select' ) {
+			const first = normalizeOptions( next.options || options )[ 0 ]?.value;
+			next.selectValue = first || 'option-a';
+		}
+		if ( value === 'radio' ) {
+			const first = normalizeOptions( next.options || options )[ 0 ]?.value;
+			next.radioValue = first || 'option-a';
+		}
+		if ( value === 'checkbox' ) {
+			next.checkboxValue = [];
+		}
+		setAttributes( next );
 	};
 
 	let control = null;
@@ -158,38 +275,61 @@ export default function Edit( { attributes, setAttributes } ) {
 				<SelectControl
 					label={ fieldLabel }
 					value={ selectValue }
-					options={ SELECT_OPTIONS }
+					options={ choiceOptions }
 					onChange={ ( value ) =>
 						setAttributes( { selectValue: value } )
 					}
 				/>
 			);
-			previewValue = selectValue;
+			previewValue =
+				choiceOptions.find( ( item ) => item.value === selectValue )
+					?.label || selectValue;
 			break;
 		case 'checkbox':
 			control = (
-				<CheckboxControl
-					label={ fieldLabel }
-					checked={ !! checkboxValue }
-					onChange={ ( value ) =>
-						setAttributes( { checkboxValue: value } )
-					}
-				/>
+				<div className="lab-form-field__checkbox-group">
+					<p className="lab-form-field__control-label">{ fieldLabel }</p>
+					{ choiceOptions.map( ( item ) => (
+						<CheckboxControl
+							key={ item.value }
+							label={ item.label }
+							checked={ selectedChecks.includes( item.value ) }
+							onChange={ ( checked ) => {
+								const next = checked
+									? [ ...selectedChecks, item.value ]
+									: selectedChecks.filter(
+											( value ) => value !== item.value
+									  );
+								setAttributes( { checkboxValue: next } );
+							} }
+						/>
+					) ) }
+				</div>
 			);
-			previewValue = checkboxValue ? 'true' : 'false';
+			previewValue = selectedChecks.length
+				? selectedChecks
+						.map(
+							( value ) =>
+								choiceOptions.find( ( item ) => item.value === value )
+									?.label || value
+						)
+						.join( ', ' )
+				: '—';
 			break;
 		case 'radio':
 			control = (
 				<RadioControl
 					label={ fieldLabel }
 					selected={ radioValue }
-					options={ RADIO_OPTIONS }
+					options={ choiceOptions }
 					onChange={ ( value ) =>
 						setAttributes( { radioValue: value } )
 					}
 				/>
 			);
-			previewValue = radioValue;
+			previewValue =
+				choiceOptions.find( ( item ) => item.value === radioValue )
+					?.label || radioValue;
 			break;
 		case 'range':
 			control = (
@@ -362,6 +502,48 @@ export default function Edit( { attributes, setAttributes } ) {
 						placeholder={ TYPE_LABELS[ fieldType ] }
 					/>
 				</PanelBody>
+
+				{ needsChoices && (
+					<PanelBody
+						title={ __( 'Choices', 'gutenberg-lab' ) }
+						initialOpen={ true }
+					>
+						<p className="lab-form-field__choices-help">
+							{ __(
+								'Add choices (e.g. Red, Green, Blue). Works for Select, Radio, and Checkbox group.',
+								'gutenberg-lab'
+							) }
+						</p>
+						{ choiceOptions.map( ( item, index ) => (
+							<div
+								className="lab-form-field__choice-row"
+								key={ `${ item.value }-${ index }` }
+							>
+								<TextControl
+									label={ __(
+										`Choice ${ index + 1 }`,
+										'gutenberg-lab'
+									) }
+									value={ item.label }
+									onChange={ ( value ) =>
+										onUpdateOptionLabel( index, value )
+									}
+								/>
+								<Button
+									variant="link"
+									isDestructive
+									disabled={ choiceOptions.length <= 1 }
+									onClick={ () => onRemoveOption( index ) }
+								>
+									{ __( 'Remove', 'gutenberg-lab' ) }
+								</Button>
+							</div>
+						) ) }
+						<Button variant="secondary" onClick={ onAddOption }>
+							{ __( 'Add choice', 'gutenberg-lab' ) }
+						</Button>
+					</PanelBody>
+				) }
 			</InspectorControls>
 
 			<div { ...blockProps }>

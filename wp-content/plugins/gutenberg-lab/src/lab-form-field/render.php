@@ -17,7 +17,7 @@ $type_labels = array(
 	'textarea' => __( 'Textarea', 'gutenberg-lab' ),
 	'toggle'   => __( 'Toggle', 'gutenberg-lab' ),
 	'select'   => __( 'Select', 'gutenberg-lab' ),
-	'checkbox' => __( 'Checkbox', 'gutenberg-lab' ),
+	'checkbox' => __( 'Checkbox group', 'gutenberg-lab' ),
 	'radio'    => __( 'Radio', 'gutenberg-lab' ),
 	'range'    => __( 'Range', 'gutenberg-lab' ),
 	'tokens'   => __( 'Tokens (tags)', 'gutenberg-lab' ),
@@ -29,17 +29,51 @@ $display_label = $label !== '' ? $label : ( $type_labels[ $field_type ] ?? $fiel
 $field_id      = 'lab-field-' . uniqid( '', false );
 $field_name    = 'lab_form[' . sanitize_key( $field_type ) . '_' . substr( md5( $field_id ), 0, 6 ) . ']';
 
-$select_options = array(
-	'option-a' => __( 'Option A', 'gutenberg-lab' ),
-	'option-b' => __( 'Option B', 'gutenberg-lab' ),
-	'option-c' => __( 'Option C', 'gutenberg-lab' ),
-);
+/**
+ * Build choice list from block attribute `options` (admin-editable).
+ * Falls back to Option A/B/C.
+ *
+ * @param array $raw_options Attribute options.
+ * @return array<string,string> value => label
+ */
+$lab_form_field_choices = static function ( $raw_options ) {
+	$defaults = array(
+		'option-a' => __( 'Option A', 'gutenberg-lab' ),
+		'option-b' => __( 'Option B', 'gutenberg-lab' ),
+		'option-c' => __( 'Option C', 'gutenberg-lab' ),
+	);
 
-$radio_options = array(
-	'red'   => __( 'Red', 'gutenberg-lab' ),
-	'green' => __( 'Green', 'gutenberg-lab' ),
-	'blue'  => __( 'Blue', 'gutenberg-lab' ),
-);
+	if ( ! is_array( $raw_options ) || empty( $raw_options ) ) {
+		return $defaults;
+	}
+
+	$choices = array();
+	foreach ( $raw_options as $index => $item ) {
+		if ( ! is_array( $item ) ) {
+			continue;
+		}
+		$opt_label = isset( $item['label'] ) ? trim( (string) $item['label'] ) : '';
+		$opt_value = isset( $item['value'] ) ? trim( (string) $item['value'] ) : '';
+		if ( $opt_label === '' ) {
+			$opt_label = sprintf(
+				/* translators: %d: option index */
+				__( 'Option %d', 'gutenberg-lab' ),
+				(int) $index + 1
+			);
+		}
+		if ( $opt_value === '' ) {
+			$opt_value = sanitize_title( $opt_label );
+			if ( $opt_value === '' ) {
+				$opt_value = 'option-' . ( (int) $index + 1 );
+			}
+		}
+		$choices[ $opt_value ] = $opt_label;
+	}
+
+	return ! empty( $choices ) ? $choices : $defaults;
+};
+
+$choice_options = $lab_form_field_choices( $attributes['options'] ?? array() );
 
 $wrapper = get_block_wrapper_attributes(
 	array(
@@ -88,11 +122,12 @@ $wrapper = get_block_wrapper_attributes(
 			break;
 
 		case 'select':
-			$selected       = $attributes['selectValue'] ?? 'option-a';
-			if ( ! isset( $select_options[ $selected ] ) ) {
-				$selected = 'option-a';
+			$choice_keys = array_keys( $choice_options );
+			$selected    = $attributes['selectValue'] ?? ( $choice_keys[0] ?? 'option-a' );
+			if ( ! isset( $choice_options[ $selected ] ) ) {
+				$selected = $choice_keys[0] ?? 'option-a';
 			}
-			$selected_label = $select_options[ $selected ];
+			$selected_label = $choice_options[ $selected ] ?? '';
 			$list_id        = $field_id . '-list';
 			?>
 			<span class="lab-form-field__label" id="<?php echo esc_attr( $field_id ); ?>-label">
@@ -106,7 +141,7 @@ $wrapper = get_block_wrapper_attributes(
 					name="<?php echo esc_attr( $field_name ); ?>"
 					aria-labelledby="<?php echo esc_attr( $field_id ); ?>-label"
 				>
-					<?php foreach ( $select_options as $value => $opt_label ) : ?>
+					<?php foreach ( $choice_options as $value => $opt_label ) : ?>
 						<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $selected, $value ); ?>>
 							<?php echo esc_html( $opt_label ); ?>
 						</option>
@@ -141,7 +176,7 @@ $wrapper = get_block_wrapper_attributes(
 						aria-labelledby="<?php echo esc_attr( $field_id ); ?>-label"
 						hidden
 					>
-						<?php foreach ( $select_options as $value => $opt_label ) : ?>
+						<?php foreach ( $choice_options as $value => $opt_label ) : ?>
 							<li
 								class="lab-form-field__select-option"
 								role="option"
@@ -160,25 +195,58 @@ $wrapper = get_block_wrapper_attributes(
 			break;
 
 		case 'checkbox':
-			$checked = ! empty( $attributes['checkboxValue'] );
+			$raw_checked = $attributes['checkboxValue'] ?? array();
+			if ( is_bool( $raw_checked ) ) {
+				$choice_keys = array_keys( $choice_options );
+				$checked_values = $raw_checked && ! empty( $choice_keys )
+					? array( $choice_keys[0] )
+					: array();
+			} elseif ( is_array( $raw_checked ) ) {
+				$checked_values = array_values(
+					array_filter(
+						array_map( 'strval', $raw_checked ),
+						static function ( $value ) use ( $choice_options ) {
+							return isset( $choice_options[ $value ] );
+						}
+					)
+				);
+			} else {
+				$checked_values = array();
+			}
 			?>
-			<label class="lab-form-field__option" for="<?php echo esc_attr( $field_id ); ?>">
-				<input
-					class="lab-form-field__native"
-					type="checkbox"
-					id="<?php echo esc_attr( $field_id ); ?>"
-					name="<?php echo esc_attr( $field_name ); ?>"
-					value="1"
-					<?php checked( $checked ); ?>
-				/>
-				<span class="lab-form-field__box" aria-hidden="true"></span>
-				<span class="lab-form-field__option-text"><?php echo esc_html( $display_label ); ?></span>
-			</label>
+			<span class="lab-form-field__label" id="<?php echo esc_attr( $field_id ); ?>-legend">
+				<?php echo esc_html( $display_label ); ?>
+			</span>
+			<div
+				class="lab-form-field__checkbox-group"
+				role="group"
+				aria-labelledby="<?php echo esc_attr( $field_id ); ?>-legend"
+			>
+				<?php foreach ( $choice_options as $value => $opt_label ) : ?>
+					<?php $check_id = $field_id . '-' . sanitize_html_class( $value ); ?>
+					<label class="lab-form-field__option" for="<?php echo esc_attr( $check_id ); ?>">
+						<input
+							class="lab-form-field__native"
+							type="checkbox"
+							id="<?php echo esc_attr( $check_id ); ?>"
+							name="<?php echo esc_attr( $field_name ); ?>[]"
+							value="<?php echo esc_attr( $value ); ?>"
+							<?php checked( in_array( $value, $checked_values, true ) ); ?>
+						/>
+						<span class="lab-form-field__box" aria-hidden="true"></span>
+						<span class="lab-form-field__option-text"><?php echo esc_html( $opt_label ); ?></span>
+					</label>
+				<?php endforeach; ?>
+			</div>
 			<?php
 			break;
 
 		case 'radio':
-			$selected = $attributes['radioValue'] ?? 'red';
+			$choice_keys = array_keys( $choice_options );
+			$selected    = $attributes['radioValue'] ?? ( $choice_keys[0] ?? 'option-a' );
+			if ( ! isset( $choice_options[ $selected ] ) ) {
+				$selected = $choice_keys[0] ?? 'option-a';
+			}
 			?>
 			<span class="lab-form-field__label" id="<?php echo esc_attr( $field_id ); ?>-legend">
 				<?php echo esc_html( $display_label ); ?>
@@ -188,7 +256,7 @@ $wrapper = get_block_wrapper_attributes(
 				role="radiogroup"
 				aria-labelledby="<?php echo esc_attr( $field_id ); ?>-legend"
 			>
-				<?php foreach ( $radio_options as $value => $opt_label ) : ?>
+				<?php foreach ( $choice_options as $value => $opt_label ) : ?>
 					<?php $radio_id = $field_id . '-' . sanitize_html_class( $value ); ?>
 					<label class="lab-form-field__option" for="<?php echo esc_attr( $radio_id ); ?>">
 						<input

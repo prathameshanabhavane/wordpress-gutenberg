@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/lab-fields-ui",
+	"version": "0.1.0",
+	"title": "Lab Fields UI",
+	"category": "widgets",
+	"icon": "visibility",
+	"description": "Display-only field rows. Configure values in the editor; frontend shows content, not form controls.",
+	"keywords": [ "display", "fields", "ui", "content", "lab" ],
+	"allowedBlocks": [ "create-block/lab-field-ui" ],
+	"supports": {
+		"html": false,
+		"align": [ "wide" ]
+	},
+	"textdomain": "gutenberg-lab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}
