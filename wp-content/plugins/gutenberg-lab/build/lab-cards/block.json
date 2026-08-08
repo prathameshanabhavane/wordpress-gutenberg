@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-cards",
+  "version": "0.3.0",
+  "title": "Lab Cards",
+  "category": "widgets",
+  "icon": "grid-view",
+  "description": "A repeating grid of Lab Cards. Click + to add as many cards as you want.",
+  "keywords": [
+    "cards",
+    "grid",
+    "loop",
+    "repeater",
+    "lab"
+  ],
+  "attributes": {
+    "columns": {
+      "type": "number",
+      "default": 3
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "padding": true,
+      "margin": true
+    },
+    "html": false
+  },
+  "example": {
+    "attributes": {
+      "columns": 2
+    },
+    "innerBlocks": [
+      {
+        "name": "create-block/lab-card",
+        "attributes": {
+          "title": "Card one",
+          "description": "First card description.",
+          "ctaText": "Learn more",
+          "ctaUrl": "#",
+          "imageUrl": "https://picsum.photos/640/360?1"
+        }
+      },
+      {
+        "name": "create-block/lab-card",
+        "attributes": {
+          "title": "Card two",
+          "description": "Second card description.",
+          "ctaText": "Learn more",
+          "ctaUrl": "#",
+          "imageUrl": "https://picsum.photos/640/360?2"
+        }
+      }
+    ]
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

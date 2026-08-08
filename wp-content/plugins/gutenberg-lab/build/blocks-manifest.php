@@ -1,20 +1,23 @@
 <?php
 // This file is generated. Do not modify it manually.
 return array(
-	'build' => array(
+	'lab-card' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
-		'name' => 'create-block/gutenberg-lab',
-		'version' => '0.2.0',
+		'name' => 'create-block/lab-card',
+		'version' => '0.3.0',
 		'title' => 'Lab Card',
 		'category' => 'widgets',
 		'icon' => 'format-image',
-		'description' => 'A card with image, title, description, and a call-to-action link.',
+		'description' => 'One card: image, title, description, and CTA link. Use inside Lab Cards.',
 		'keywords' => array(
 			'card',
 			'image',
 			'cta',
 			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-cards'
 		),
 		'attributes' => array(
 			'imageId' => array(
@@ -50,13 +53,48 @@ return array(
 			)
 		),
 		'supports' => array(
-			'align' => array(
-				'wide',
-				'full'
-			),
 			'color' => array(
 				'background' => true,
 				'text' => true
+			),
+			'spacing' => array(
+				'padding' => true
+			),
+			'html' => false,
+			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-cards' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-cards',
+		'version' => '0.3.0',
+		'title' => 'Lab Cards',
+		'category' => 'widgets',
+		'icon' => 'grid-view',
+		'description' => 'A repeating grid of Lab Cards. Click + to add as many cards as you want.',
+		'keywords' => array(
+			'cards',
+			'grid',
+			'loop',
+			'repeater',
+			'lab'
+		),
+		'attributes' => array(
+			'columns' => array(
+				'type' => 'number',
+				'default' => 3
+			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide',
+				'full'
 			),
 			'spacing' => array(
 				'padding' => true,
@@ -66,11 +104,29 @@ return array(
 		),
 		'example' => array(
 			'attributes' => array(
-				'title' => 'Card title',
-				'description' => 'A short description of this card.',
-				'ctaText' => 'Learn more',
-				'ctaUrl' => '#',
-				'imageUrl' => 'https://picsum.photos/640/360'
+				'columns' => 2
+			),
+			'innerBlocks' => array(
+				array(
+					'name' => 'create-block/lab-card',
+					'attributes' => array(
+						'title' => 'Card one',
+						'description' => 'First card description.',
+						'ctaText' => 'Learn more',
+						'ctaUrl' => '#',
+						'imageUrl' => 'https://picsum.photos/640/360?1'
+					)
+				),
+				array(
+					'name' => 'create-block/lab-card',
+					'attributes' => array(
+						'title' => 'Card two',
+						'description' => 'Second card description.',
+						'ctaText' => 'Learn more',
+						'ctaUrl' => '#',
+						'imageUrl' => 'https://picsum.photos/640/360?2'
+					)
+				)
 			)
 		),
 		'textdomain' => 'gutenberg-lab',

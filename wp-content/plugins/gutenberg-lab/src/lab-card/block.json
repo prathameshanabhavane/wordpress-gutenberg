@@ -1,13 +1,14 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "create-block/gutenberg-lab",
-	"version": "0.2.0",
+	"name": "create-block/lab-card",
+	"version": "0.3.0",
 	"title": "Lab Card",
 	"category": "widgets",
 	"icon": "format-image",
-	"description": "A card with image, title, description, and a call-to-action link.",
+	"description": "One card: image, title, description, and CTA link. Use inside Lab Cards.",
 	"keywords": [ "card", "image", "cta", "lab" ],
+	"parent": [ "create-block/lab-cards" ],
 	"attributes": {
 		"imageId": {
 			"type": "number"
@@ -42,25 +43,15 @@
 		}
 	},
 	"supports": {
-		"align": [ "wide", "full" ],
 		"color": {
 			"background": true,
 			"text": true
 		},
 		"spacing": {
-			"padding": true,
-			"margin": true
+			"padding": true
 		},
-		"html": false
-	},
-	"example": {
-		"attributes": {
-			"title": "Card title",
-			"description": "A short description of this card.",
-			"ctaText": "Learn more",
-			"ctaUrl": "#",
-			"imageUrl": "https://picsum.photos/640/360"
-		}
+		"html": false,
+		"reusable": false
 	},
 	"textdomain": "gutenberg-lab",
 	"editorScript": "file:./index.js",

@@ -1,0 +1,43 @@
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/lab-cards/style.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+/**
+ * Shared styles — Lab Cards grid (parent).
+ */
+.wp-block-create-block-lab-cards.lab-cards,
+.lab-cards.wp-block-create-block-lab-cards {
+  box-sizing: border-box;
+}
+
+.lab-cards__grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+
+.lab-cards--columns-2 .lab-cards__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lab-cards--columns-3 .lab-cards__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.lab-cards--columns-4 .lab-cards__grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 781px) {
+  .lab-cards--columns-3 .lab-cards__grid,
+  .lab-cards--columns-4 .lab-cards__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .lab-cards--columns-2 .lab-cards__grid,
+  .lab-cards--columns-3 .lab-cards__grid,
+  .lab-cards--columns-4 .lab-cards__grid {
+    grid-template-columns: 1fr;
+  }
+}

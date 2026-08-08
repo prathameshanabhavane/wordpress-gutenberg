@@ -58,9 +58,10 @@ You (admin)
 |------|--------|----------------|
 | Plugin name | Gutenberg Lab | The add-on you activate |
 | Block name | `create-block/gutenberg-lab` | Unique ID WordPress stores in the post |
-| Inserter title | **Lab Card** | What you search for in **+** |
-| Type | **Dynamic block** | Editor stores settings; **PHP** draws visitor HTML |
-| Fields | image, title, description, CTA | See [09-lab-card-block.md](./09-lab-card-block.md) |
+| Inserter title | **Lab Cards** (parent) + **Lab Card** (child inside it) |
+| Type | Parent uses InnerBlocks; each card is dynamic PHP |
+| Fields per card | image, title, description, CTA |
+| Repeater | Click **+** on Lab Cards to add more cards |
 
 ---
 
@@ -188,9 +189,10 @@ build/                →  Factory output (WordPress loads THIS, not src/)
 | 6 | [06-render-php.md](./06-render-php.md) | Frontend HTML (`render.php`) |
 | 7 | [07-build-and-assets.md](./07-build-and-assets.md) | `npm start` and the `build/` folder |
 | 8 | [08-debug-cheatsheet.md](./08-debug-cheatsheet.md) | All debug tools in one place |
-| 9 | [09-lab-card-block.md](./09-lab-card-block.md) | Current block: image + title + description + CTA |
+| 9 | [09-lab-card-block.md](./09-lab-card-block.md) | Single card fields explained |
+| 10 | [10-lab-cards-loop.md](./10-lab-cards-loop.md) | **Advanced:** parent grid + add many cards (+) |
 
-**Suggested pace:** one step at a time. Steps 0–1 = understanding. Steps 2–7 = hands-on. Step 8 = keep open while practicing. Step 9 = the card you build in this plugin.
+**Suggested pace:** one step at a time. Steps 0–1 = understanding. Steps 2–7 = hands-on. Step 8 = keep open while practicing. Steps 9–10 = Lab Card + repeating Lab Cards.
 
 ---
 
@@ -238,12 +240,11 @@ define( 'SCRIPT_DEBUG', true );
 
 You “get it” when you can:
 
-1. Insert **Lab Card** in a post.
-2. Add image, title, description, and CTA URL.
-3. Save, reload the editor — content is still there.
-4. View the post on the frontend — card looks correct and the link works.
-5. Open **Code editor** and see a self-closing block comment with JSON attributes (no inner HTML).
-6. Explain out loud: *“Settings are saved in the post; PHP draws what visitors see.”*
+1. Insert **Lab Cards** (parent grid).
+2. Fill cards and click **+** to add more.
+3. Set columns in the sidebar.
+4. View frontend — all cards render in a loop/grid.
+5. Explain: parent InnerBlocks + each child `render.php`.
 
 ---
 

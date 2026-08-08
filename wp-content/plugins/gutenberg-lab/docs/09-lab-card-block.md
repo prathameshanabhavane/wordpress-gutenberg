@@ -365,4 +365,5 @@ You can explain, without looking:
 - [08-debug-cheatsheet.md](./08-debug-cheatsheet.md)  
 
 **Previous:** [08-debug-cheatsheet.md](./08-debug-cheatsheet.md)  
+**Next:** [10-lab-cards-loop.md](./10-lab-cards-loop.md)  
 **Back to index:** [README.md](./README.md)
