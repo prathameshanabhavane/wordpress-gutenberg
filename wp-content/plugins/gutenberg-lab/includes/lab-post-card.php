@@ -14,16 +14,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param WP_Post|int $post     Post object or ID.
  * @param string      $cta_text CTA label.
+ * @param bool        $show_cta Whether to render the CTA button.
  * @return string HTML.
  */
-function gutenberg_lab_render_post_card( $post, $cta_text = '' ) {
+function gutenberg_lab_render_post_card( $post, $cta_text = '', $show_cta = true ) {
 	$post = get_post( $post );
 	if ( ! $post instanceof WP_Post ) {
 		return '';
 	}
 
-	if ( $cta_text === '' ) {
+	if ( $show_cta && $cta_text === '' ) {
 		$cta_text = __( 'Read more', 'gutenberg-lab' );
+	}
+
+	if ( ! $show_cta ) {
+		$cta_text = '';
 	}
 
 	$title       = get_the_title( $post );
@@ -66,7 +71,7 @@ function gutenberg_lab_render_post_card( $post, $cta_text = '' ) {
 			<?php if ( $excerpt ) : ?>
 				<div class="lab-card__description"><?php echo wp_kses_post( wpautop( $excerpt ) ); ?></div>
 			<?php endif; ?>
-			<?php if ( $url && $cta_text ) : ?>
+			<?php if ( $show_cta && $url && $cta_text ) : ?>
 				<p class="lab-card__cta-wrap">
 					<a class="lab-card__cta" href="<?php echo esc_url( $url ); ?>">
 						<?php echo esc_html( $cta_text ); ?>

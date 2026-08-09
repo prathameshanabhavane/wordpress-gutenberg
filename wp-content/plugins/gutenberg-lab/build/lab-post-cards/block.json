@@ -49,6 +49,14 @@
       "type": "array",
       "default": []
     },
+    "source": {
+      "type": "string",
+      "default": "query"
+    },
+    "showCta": {
+      "type": "boolean",
+      "default": true
+    },
     "ctaText": {
       "type": "string",
       "default": "Read more"

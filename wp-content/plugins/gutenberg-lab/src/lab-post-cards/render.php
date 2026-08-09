@@ -23,7 +23,10 @@ $tag_id        = isset( $attributes['tagId'] ) ? (int) $attributes['tagId'] : 0;
 $selected_ids  = isset( $attributes['selectedPostIds'] ) && is_array( $attributes['selectedPostIds'] )
 	? array_values( array_filter( array_map( 'absint', $attributes['selectedPostIds'] ) ) )
 	: array();
+$source        = isset( $attributes['source'] ) ? sanitize_key( $attributes['source'] ) : 'query';
+$is_manual     = ( 'manual' === $source );
 $cta_text      = isset( $attributes['ctaText'] ) ? sanitize_text_field( $attributes['ctaText'] ) : __( 'Read more', 'gutenberg-lab' );
+$show_cta      = ! isset( $attributes['showCta'] ) || (bool) $attributes['showCta'];
 $excerpt_lines = isset( $attributes['excerptLines'] ) ? max( 1, min( 12, (int) $attributes['excerptLines'] ) ) : 3;
 
 $allowed_orderby = array( 'date', 'title', 'modified' );
@@ -38,10 +41,15 @@ $query_args = array(
 	'no_found_rows'       => true,
 );
 
-if ( ! empty( $selected_ids ) ) {
-	$query_args['post__in']       = $selected_ids;
-	$query_args['orderby']        = 'post__in';
-	$query_args['posts_per_page'] = count( $selected_ids );
+if ( $is_manual ) {
+	if ( empty( $selected_ids ) ) {
+		$query_args['post__in']       = array( 0 );
+		$query_args['posts_per_page'] = 1;
+	} else {
+		$query_args['post__in']       = $selected_ids;
+		$query_args['orderby']        = 'post__in';
+		$query_args['posts_per_page'] = count( $selected_ids );
+	}
 } else {
 	$query_args['posts_per_page'] = $posts_to_show;
 	$query_args['orderby']        = $orderby;
@@ -79,12 +87,20 @@ $wrapper_attributes = get_block_wrapper_attributes(
 			<?php
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				echo gutenberg_lab_render_post_card( get_post(), $cta_text ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo gutenberg_lab_render_post_card( get_post(), $cta_text, $show_cta ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			wp_reset_postdata();
 			?>
 		</div>
 	<?php else : ?>
-		<p class="lab-post-cards__empty"><?php esc_html_e( 'No posts found.', 'gutenberg-lab' ); ?></p>
+		<p class="lab-post-cards__empty">
+			<?php
+			echo esc_html(
+				$is_manual
+					? __( 'No posts mapped yet.', 'gutenberg-lab' )
+					: __( 'No posts found.', 'gutenberg-lab' )
+			);
+			?>
+		</p>
 	<?php endif; ?>
 </div>

@@ -1,5 +1,5 @@
 /**
- * Lab Post Cards — query posts and preview mapped card UI.
+ * Lab Post Cards — query or search-map posts into card UI.
  */
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
@@ -8,9 +8,13 @@ import {
 	RangeControl,
 	SelectControl,
 	TextControl,
-	FormTokenField,
+	SearchControl,
+	Button,
 	Spinner,
 	Notice,
+	ToggleControl,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useMemo, useState } from '@wordpress/element';
@@ -42,11 +46,14 @@ export default function Edit( { attributes, setAttributes } ) {
 		search,
 		categoryId,
 		tagId,
-		selectedPostIds,
+		selectedPostIds = [],
 		ctaText,
+		showCta = true,
 		excerptLines,
+		source = 'query',
 	} = attributes;
 
+	const isManual = source === 'manual';
 	const [ postSearch, setPostSearch ] = useState( '' );
 
 	const {
@@ -56,6 +63,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		searchedPosts,
 		selectedPosts,
 		isResolving,
+		isSearching,
 	} = useSelect(
 		( select ) => {
 			const { getEntityRecords, isResolving: storeIsResolving } =
@@ -69,11 +77,11 @@ export default function Edit( { attributes, setAttributes } ) {
 				status: 'publish',
 			};
 
-			if ( selectedPostIds?.length ) {
+			if ( isManual && selectedPostIds.length ) {
 				query.include = selectedPostIds;
 				query.orderby = 'include';
 				query.per_page = selectedPostIds.length;
-			} else {
+			} else if ( ! isManual ) {
 				if ( search ) {
 					query.search = search;
 				}
@@ -83,16 +91,28 @@ export default function Edit( { attributes, setAttributes } ) {
 				if ( tagId ) {
 					query.tags = [ tagId ];
 				}
+			} else {
+				// Manual with nothing mapped yet.
+				query.include = [ 0 ];
+				query.per_page = 1;
 			}
 
 			const searchQuery = {
-				per_page: 20,
+				per_page: 12,
 				status: 'publish',
 				_fields: [ 'id', 'title' ],
 			};
 			if ( postSearch ) {
 				searchQuery.search = postSearch;
 			}
+
+			const selectedQuery = {
+				include: selectedPostIds.length ? selectedPostIds : [ 0 ],
+				per_page: selectedPostIds.length || 1,
+				orderby: 'include',
+				_fields: [ 'id', 'title' ],
+				status: 'publish',
+			};
 
 			return {
 				categories:
@@ -105,21 +125,28 @@ export default function Edit( { attributes, setAttributes } ) {
 						per_page: 100,
 						hide_empty: false,
 					} ) || [],
-				posts: getEntityRecords( 'postType', 'post', query ),
+				posts:
+					isManual && ! selectedPostIds.length
+						? []
+						: getEntityRecords( 'postType', 'post', query ),
 				searchedPosts:
 					getEntityRecords( 'postType', 'post', searchQuery ) || [],
-				selectedPosts: selectedPostIds?.length
-					? getEntityRecords( 'postType', 'post', {
-							include: selectedPostIds,
-							per_page: selectedPostIds.length,
-							_fields: [ 'id', 'title' ],
-							status: 'publish',
-					  } ) || []
+				selectedPosts: selectedPostIds.length
+					? getEntityRecords( 'postType', 'post', selectedQuery ) ||
+					  []
 					: [],
-				isResolving: storeIsResolving( 'getEntityRecords', [
+				isResolving:
+					isManual && ! selectedPostIds.length
+						? false
+						: storeIsResolving( 'getEntityRecords', [
+								'postType',
+								'post',
+								query,
+						  ] ),
+				isSearching: storeIsResolving( 'getEntityRecords', [
 					'postType',
 					'post',
-					query,
+					searchQuery,
 				] ),
 			};
 		},
@@ -132,6 +159,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			tagId,
 			selectedPostIds,
 			postSearch,
+			isManual,
 		]
 	);
 
@@ -157,50 +185,70 @@ export default function Edit( { attributes, setAttributes } ) {
 		[ tags ]
 	);
 
-	const titleToId = useMemo( () => {
-		const map = {};
-		[ ...( searchedPosts || [] ), ...( selectedPosts || [] ), ...( posts || [] ) ].forEach(
-			( post ) => {
-				const title = getPostTitle( post );
-				if ( title ) {
-					map[ title ] = post.id;
-				}
-			}
-		);
-		return map;
-	}, [ searchedPosts, selectedPosts, posts ] );
-
 	const idToTitle = useMemo( () => {
 		const map = {};
-		[ ...( selectedPosts || [] ), ...( posts || [] ), ...( searchedPosts || [] ) ].forEach(
-			( post ) => {
-				map[ post.id ] = getPostTitle( post ) || `#${ post.id }`;
-			}
-		);
+		[
+			...( selectedPosts || [] ),
+			...( posts || [] ),
+			...( searchedPosts || [] ),
+		].forEach( ( post ) => {
+			map[ post.id ] = getPostTitle( post ) || `#${ post.id }`;
+		} );
 		return map;
 	}, [ selectedPosts, posts, searchedPosts ] );
 
-	const postSuggestions = useMemo(
+	/** Keep mapped list in selectedPostIds order. */
+	const mappedPosts = useMemo(
 		() =>
-			( searchedPosts || [] )
-				.map( ( post ) => getPostTitle( post ) )
-				.filter( Boolean ),
-		[ searchedPosts ]
-	);
-
-	const selectedPostTitles = useMemo(
-		() =>
-			( selectedPostIds || [] ).map(
-				( id ) => idToTitle[ id ] || `#${ id }`
-			),
+			( selectedPostIds || [] ).map( ( id ) => ( {
+				id,
+				title: idToTitle[ id ] || `#${ id }`,
+			} ) ),
 		[ selectedPostIds, idToTitle ]
 	);
 
-	const onChangeSelectedPosts = ( tokens ) => {
-		const nextIds = tokens
-			.map( ( token ) => titleToId[ token ] )
-			.filter( Boolean );
-		setAttributes( { selectedPostIds: nextIds } );
+	const searchResults = useMemo(
+		() =>
+			( searchedPosts || [] ).filter(
+				( post ) => ! selectedPostIds.includes( post.id )
+			),
+		[ searchedPosts, selectedPostIds ]
+	);
+
+	const addPost = ( id ) => {
+		if ( selectedPostIds.includes( id ) ) {
+			return;
+		}
+		setAttributes( {
+			source: 'manual',
+			selectedPostIds: [ ...selectedPostIds, id ],
+		} );
+	};
+
+	const removePost = ( id ) => {
+		setAttributes( {
+			selectedPostIds: selectedPostIds.filter(
+				( postId ) => postId !== id
+			),
+		} );
+	};
+
+	const movePost = ( id, direction ) => {
+		const index = selectedPostIds.indexOf( id );
+		if ( index < 0 ) {
+			return;
+		}
+		const next = index + direction;
+		if ( next < 0 || next >= selectedPostIds.length ) {
+			return;
+		}
+		const ids = [ ...selectedPostIds ];
+		[ ids[ index ], ids[ next ] ] = [ ids[ next ], ids[ index ] ];
+		setAttributes( { selectedPostIds: ids } );
+	};
+
+	const clearMapped = () => {
+		setAttributes( { selectedPostIds: [] } );
 	};
 
 	const blockProps = useBlockProps( {
@@ -210,119 +258,283 @@ export default function Edit( { attributes, setAttributes } ) {
 		},
 	} );
 
-	const list = posts || [];
+	const list = isManual
+		? ( posts || [] ).slice().sort( ( a, b ) => {
+				return (
+					selectedPostIds.indexOf( a.id ) -
+					selectedPostIds.indexOf( b.id )
+				);
+		  } )
+		: posts || [];
 
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody
-					title={ __( 'Query', 'gutenberg-lab' ) }
+					title={ __( 'Content source', 'gutenberg-lab' ) }
 					initialOpen={ true }
 				>
-					<TextControl
-						label={ __( 'Search posts', 'gutenberg-lab' ) }
-						value={ search }
+					<ToggleGroupControl
+						label={ __( 'How to fill cards', 'gutenberg-lab' ) }
+						value={ source }
 						onChange={ ( value ) =>
-							setAttributes( { search: value } )
+							setAttributes( { source: value } )
 						}
-						placeholder={ __( 'Keyword…', 'gutenberg-lab' ) }
-						help={ __(
-							'Leave empty for latest posts. Ignored if you pick specific posts below.',
-							'gutenberg-lab'
-						) }
-					/>
-					<SelectControl
-						label={ __( 'Category', 'gutenberg-lab' ) }
-						value={ String( categoryId || 0 ) }
-						options={ categoryOptions }
-						onChange={ ( value ) =>
-							setAttributes( {
-								categoryId: parseInt( value, 10 ) || 0,
-							} )
-						}
-					/>
-					<SelectControl
-						label={ __( 'Tag', 'gutenberg-lab' ) }
-						value={ String( tagId || 0 ) }
-						options={ tagOptions }
-						onChange={ ( value ) =>
-							setAttributes( {
-								tagId: parseInt( value, 10 ) || 0,
-							} )
-						}
-					/>
-					<RangeControl
-						label={ __( 'Number of posts', 'gutenberg-lab' ) }
-						value={ postsToShow }
-						onChange={ ( value ) =>
-							setAttributes( { postsToShow: value } )
-						}
-						min={ 1 }
-						max={ 24 }
-					/>
-					<SelectControl
-						label={ __( 'Order by', 'gutenberg-lab' ) }
-						value={ orderBy }
-						options={ [
-							{
-								label: __( 'Date', 'gutenberg-lab' ),
-								value: 'date',
-							},
-							{
-								label: __( 'Title', 'gutenberg-lab' ),
-								value: 'title',
-							},
-							{
-								label: __( 'Modified', 'gutenberg-lab' ),
-								value: 'modified',
-							},
-						] }
-						onChange={ ( value ) =>
-							setAttributes( { orderBy: value } )
-						}
-					/>
-					<SelectControl
-						label={ __( 'Order', 'gutenberg-lab' ) }
-						value={ order }
-						options={ [
-							{
-								label: __( 'Descending', 'gutenberg-lab' ),
-								value: 'desc',
-							},
-							{
-								label: __( 'Ascending', 'gutenberg-lab' ),
-								value: 'asc',
-							},
-						] }
-						onChange={ ( value ) =>
-							setAttributes( { order: value } )
-						}
-					/>
-				</PanelBody>
-
-				<PanelBody
-					title={ __( 'Pick specific posts', 'gutenberg-lab' ) }
-					initialOpen={ false }
-				>
-					<FormTokenField
-						label={ __( 'Posts', 'gutenberg-lab' ) }
-						value={ selectedPostTitles }
-						suggestions={ postSuggestions }
-						onInputChange={ setPostSearch }
-						onChange={ onChangeSelectedPosts }
-						placeholder={ __(
-							'Search and add posts…',
-							'gutenberg-lab'
-						) }
-						__experimentalExpandOnFocus
-					/>
+						isBlock
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+					>
+						<ToggleGroupControlOption
+							value="query"
+							label={ __( 'Query', 'gutenberg-lab' ) }
+						/>
+						<ToggleGroupControlOption
+							value="manual"
+							label={ __( 'Search & map', 'gutenberg-lab' ) }
+						/>
+					</ToggleGroupControl>
 					<p className="lab-post-cards__help">
-						{ __(
-							'When posts are selected here, category/tag/search filters are ignored.',
-							'gutenberg-lab'
-						) }
+						{ isManual
+							? __(
+									'Search posts and add them to this block. Order is preserved.',
+									'gutenberg-lab'
+							  )
+							: __(
+									'Automatically load posts by keyword, category, or tag.',
+									'gutenberg-lab'
+							  ) }
 					</p>
 				</PanelBody>
+
+				{ isManual ? (
+					<PanelBody
+						title={ __( 'Map posts', 'gutenberg-lab' ) }
+						initialOpen={ true }
+					>
+						<SearchControl
+							label={ __( 'Search posts', 'gutenberg-lab' ) }
+							value={ postSearch }
+							onChange={ setPostSearch }
+							placeholder={ __(
+								'Type to find posts…',
+								'gutenberg-lab'
+							) }
+							__nextHasNoMarginBottom
+						/>
+
+						{ isSearching && (
+							<div className="lab-post-cards__search-status">
+								<Spinner />
+							</div>
+						) }
+
+						{ ! isSearching && searchResults.length > 0 && (
+							<ul className="lab-post-cards__search-results">
+								{ searchResults.map( ( post ) => {
+									const title =
+										getPostTitle( post ) ||
+										`#${ post.id }`;
+									return (
+										<li key={ post.id }>
+											<span
+												className="lab-post-cards__result-title"
+												title={ title }
+											>
+												{ title }
+											</span>
+											<Button
+												variant="secondary"
+												size="small"
+												onClick={ () =>
+													addPost( post.id )
+												}
+											>
+												{ __( 'Add', 'gutenberg-lab' ) }
+											</Button>
+										</li>
+									);
+								} ) }
+							</ul>
+						) }
+
+						{ ! isSearching &&
+							postSearch &&
+							searchResults.length === 0 && (
+								<p className="lab-post-cards__help">
+									{ __(
+										'No matching posts. Try another keyword.',
+										'gutenberg-lab'
+									) }
+								</p>
+							) }
+
+						{ mappedPosts.length > 0 && (
+							<>
+								<div className="lab-post-cards__mapped-header">
+									<strong>
+										{ __(
+											'Mapped posts',
+											'gutenberg-lab'
+										) }{ ' ' }
+										({ mappedPosts.length })
+									</strong>
+									<Button
+										variant="link"
+										isDestructive
+										onClick={ clearMapped }
+									>
+										{ __( 'Clear all', 'gutenberg-lab' ) }
+									</Button>
+								</div>
+								<ul className="lab-post-cards__mapped-list">
+									{ mappedPosts.map( ( item, index ) => (
+										<li key={ item.id }>
+											<span
+												className="lab-post-cards__mapped-title"
+												title={ item.title }
+											>
+												{ item.title }
+											</span>
+											<div className="lab-post-cards__mapped-actions">
+												<Button
+													size="small"
+													variant="tertiary"
+													disabled={ index === 0 }
+													onClick={ () =>
+														movePost( item.id, -1 )
+													}
+													label={ __(
+														'Move up',
+														'gutenberg-lab'
+													) }
+													showTooltip
+												>
+													↑
+												</Button>
+												<Button
+													size="small"
+													variant="tertiary"
+													disabled={
+														index ===
+														mappedPosts.length - 1
+													}
+													onClick={ () =>
+														movePost( item.id, 1 )
+													}
+													label={ __(
+														'Move down',
+														'gutenberg-lab'
+													) }
+													showTooltip
+												>
+													↓
+												</Button>
+												<Button
+													size="small"
+													variant="tertiary"
+													isDestructive
+													onClick={ () =>
+														removePost( item.id )
+													}
+												>
+													{ __(
+														'Remove',
+														'gutenberg-lab'
+													) }
+												</Button>
+											</div>
+										</li>
+									) ) }
+								</ul>
+							</>
+						) }
+					</PanelBody>
+				) : (
+					<PanelBody
+						title={ __( 'Query', 'gutenberg-lab' ) }
+						initialOpen={ true }
+					>
+						<TextControl
+							label={ __( 'Search posts', 'gutenberg-lab' ) }
+							value={ search }
+							onChange={ ( value ) =>
+								setAttributes( { search: value } )
+							}
+							placeholder={ __( 'Keyword…', 'gutenberg-lab' ) }
+							help={ __(
+								'Leave empty for latest posts.',
+								'gutenberg-lab'
+							) }
+						/>
+						<SelectControl
+							label={ __( 'Category', 'gutenberg-lab' ) }
+							value={ String( categoryId || 0 ) }
+							options={ categoryOptions }
+							onChange={ ( value ) =>
+								setAttributes( {
+									categoryId: parseInt( value, 10 ) || 0,
+								} )
+							}
+						/>
+						<SelectControl
+							label={ __( 'Tag', 'gutenberg-lab' ) }
+							value={ String( tagId || 0 ) }
+							options={ tagOptions }
+							onChange={ ( value ) =>
+								setAttributes( {
+									tagId: parseInt( value, 10 ) || 0,
+								} )
+							}
+						/>
+						<RangeControl
+							label={ __( 'Number of posts', 'gutenberg-lab' ) }
+							value={ postsToShow }
+							onChange={ ( value ) =>
+								setAttributes( { postsToShow: value } )
+							}
+							min={ 1 }
+							max={ 24 }
+						/>
+						<SelectControl
+							label={ __( 'Order by', 'gutenberg-lab' ) }
+							value={ orderBy }
+							options={ [
+								{
+									label: __( 'Date', 'gutenberg-lab' ),
+									value: 'date',
+								},
+								{
+									label: __( 'Title', 'gutenberg-lab' ),
+									value: 'title',
+								},
+								{
+									label: __( 'Modified', 'gutenberg-lab' ),
+									value: 'modified',
+								},
+							] }
+							onChange={ ( value ) =>
+								setAttributes( { orderBy: value } )
+							}
+						/>
+						<SelectControl
+							label={ __( 'Order', 'gutenberg-lab' ) }
+							value={ order }
+							options={ [
+								{
+									label: __( 'Descending', 'gutenberg-lab' ),
+									value: 'desc',
+								},
+								{
+									label: __( 'Ascending', 'gutenberg-lab' ),
+									value: 'asc',
+								},
+							] }
+							onChange={ ( value ) =>
+								setAttributes( { order: value } )
+							}
+						/>
+					</PanelBody>
+				) }
 
 				<PanelBody title={ __( 'Layout', 'gutenberg-lab' ) }>
 					<RangeControl
@@ -347,13 +559,22 @@ export default function Edit( { attributes, setAttributes } ) {
 							'gutenberg-lab'
 						) }
 					/>
-					<TextControl
-						label={ __( 'CTA text', 'gutenberg-lab' ) }
-						value={ ctaText }
+					<ToggleControl
+						label={ __( 'Show CTA button', 'gutenberg-lab' ) }
+						checked={ !! showCta }
 						onChange={ ( value ) =>
-							setAttributes( { ctaText: value } )
+							setAttributes( { showCta: value } )
 						}
 					/>
+					{ showCta && (
+						<TextControl
+							label={ __( 'CTA text', 'gutenberg-lab' ) }
+							value={ ctaText }
+							onChange={ ( value ) =>
+								setAttributes( { ctaText: value } )
+							}
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 
@@ -365,10 +586,15 @@ export default function Edit( { attributes, setAttributes } ) {
 				) }
 				{ ! isResolving && list.length === 0 && (
 					<Notice status="info" isDismissible={ false }>
-						{ __(
-							'No posts found. Adjust search, category, tag, or pick posts.',
-							'gutenberg-lab'
-						) }
+						{ isManual
+							? __(
+									'Search and add posts in the sidebar to map them into cards.',
+									'gutenberg-lab'
+							  )
+							: __(
+									'No posts found. Adjust search, category, or tag.',
+									'gutenberg-lab'
+							  ) }
 					</Notice>
 				) }
 				<div className="lab-cards__grid">
@@ -383,7 +609,6 @@ export default function Edit( { attributes, setAttributes } ) {
 						const image =
 							post._embedded?.[ 'wp:featuredmedia' ]?.[ 0 ]
 								?.source_url || '';
-						const link = post.link || '#';
 
 						return (
 							<article
@@ -406,12 +631,17 @@ export default function Edit( { attributes, setAttributes } ) {
 											<p>{ excerpt }</p>
 										</div>
 									) : null }
-									<p className="lab-card__cta-wrap">
-										<span className="lab-card__cta">
-											{ ctaText ||
-												__( 'Read more', 'gutenberg-lab' ) }
-										</span>
-									</p>
+									{ showCta ? (
+										<p className="lab-card__cta-wrap">
+											<span className="lab-card__cta">
+												{ ctaText ||
+													__(
+														'Read more',
+														'gutenberg-lab'
+													) }
+											</span>
+										</p>
+									) : null }
 								</div>
 							</article>
 						);

@@ -481,6 +481,14 @@ return array(
 					
 				)
 			),
+			'source' => array(
+				'type' => 'string',
+				'default' => 'query'
+			),
+			'showCta' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
 			'ctaText' => array(
 				'type' => 'string',
 				'default' => 'Read more'
