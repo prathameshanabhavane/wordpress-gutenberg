@@ -687,6 +687,97 @@ return array(
 		'style' => 'file:./style-index.css',
 		'render' => 'file:./render.php'
 	),
+	'lab-search' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-search',
+		'version' => '0.1.0',
+		'title' => 'Lab Search',
+		'category' => 'widgets',
+		'icon' => 'search',
+		'description' => 'Search posts, pages, categories, tags, and custom types. Use WordPress default search or pick targets.',
+		'keywords' => array(
+			'search',
+			'find',
+			'posts',
+			'pages',
+			'categories',
+			'tags',
+			'lab'
+		),
+		'attributes' => array(
+			'label' => array(
+				'type' => 'string',
+				'default' => 'Search'
+			),
+			'showLabel' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'placeholder' => array(
+				'type' => 'string',
+				'default' => 'Search…'
+			),
+			'buttonText' => array(
+				'type' => 'string',
+				'default' => 'Search'
+			),
+			'scope' => array(
+				'type' => 'string',
+				'default' => 'default'
+			),
+			'postTypes' => array(
+				'type' => 'array',
+				'default' => array(
+					'post',
+					'page'
+				)
+			),
+			'taxonomies' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'liveResults' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'resultsMode' => array(
+				'type' => 'string',
+				'default' => 'limited'
+			),
+			'resultsLimit' => array(
+				'type' => 'number',
+				'default' => 8
+			),
+			'excludedPostIds' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'excludedTermIds' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide',
+				'full'
+			),
+			'html' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'viewScript' => 'file:./view.js',
+		'render' => 'file:./render.php'
+	),
 	'lab-tag-cards' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-search",
+  "version": "0.1.0",
+  "title": "Lab Search",
+  "category": "widgets",
+  "icon": "search",
+  "description": "Search posts, pages, categories, tags, and custom types. Use WordPress default search or pick targets.",
+  "keywords": [
+    "search",
+    "find",
+    "posts",
+    "pages",
+    "categories",
+    "tags",
+    "lab"
+  ],
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "Search"
+    },
+    "showLabel": {
+      "type": "boolean",
+      "default": false
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "Search…"
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Search"
+    },
+    "scope": {
+      "type": "string",
+      "default": "default"
+    },
+    "postTypes": {
+      "type": "array",
+      "default": [
+        "post",
+        "page"
+      ]
+    },
+    "taxonomies": {
+      "type": "array",
+      "default": []
+    },
+    "liveResults": {
+      "type": "boolean",
+      "default": true
+    },
+    "resultsMode": {
+      "type": "string",
+      "default": "limited"
+    },
+    "resultsLimit": {
+      "type": "number",
+      "default": 8
+    },
+    "excludedPostIds": {
+      "type": "array",
+      "default": []
+    },
+    "excludedTermIds": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

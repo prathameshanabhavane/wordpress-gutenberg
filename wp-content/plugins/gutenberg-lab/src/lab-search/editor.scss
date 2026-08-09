@@ -1,0 +1,86 @@
+/**
+ * Editor-only styles for Lab Search.
+ */
+
+.lab-search__help {
+	margin: 0.5rem 0 0;
+	font-size: 12px;
+	line-height: 1.45;
+	color: #757575;
+}
+
+.lab-search__targets {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	margin-top: 1rem;
+	padding-top: 0.85rem;
+	border-top: 1px solid #e0e0e0;
+}
+
+.lab-search__targets-title {
+	display: block;
+	margin: 0.75rem 0 0.35rem;
+	font-size: 12px;
+}
+
+.lab-search__targets-title:first-child {
+	margin-top: 0;
+}
+
+.editor-styles-wrapper .lab-search__input,
+.editor-styles-wrapper .lab-search__button {
+	opacity: 0.85;
+}
+
+.lab-search__exclude {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+}
+
+.lab-search__exclude-status {
+	display: flex;
+	align-items: center;
+	min-height: 1.5rem;
+}
+
+.lab-search__exclude-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin-top: 0.35rem;
+}
+
+.lab-search__exclude-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	max-height: 14rem;
+	overflow: auto;
+}
+
+.lab-search__exclude-list li {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	padding: 0.35rem 0.45rem;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+	background: #fff;
+}
+
+.lab-search__exclude-title {
+	font-size: 12px;
+	line-height: 1.4;
+	min-width: 0;
+}
+
+.lab-search__exclude-type {
+	color: #757575;
+}
