@@ -53,6 +53,22 @@
 			"type": "string",
 			"default": "Read more"
 		},
+		"showTerms": {
+			"type": "boolean",
+			"default": false
+		},
+		"showCategories": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTags": {
+			"type": "boolean",
+			"default": false
+		},
+		"maxTerms": {
+			"type": "number",
+			"default": 3
+		},
 		"excerptLines": {
 			"type": "number",
 			"default": 3

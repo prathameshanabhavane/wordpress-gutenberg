@@ -493,6 +493,22 @@ return array(
 				'type' => 'string',
 				'default' => 'Read more'
 			),
+			'showTerms' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'showCategories' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showTags' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'maxTerms' => array(
+				'type' => 'number',
+				'default' => 3
+			),
 			'excerptLines' => array(
 				'type' => 'number',
 				'default' => 3

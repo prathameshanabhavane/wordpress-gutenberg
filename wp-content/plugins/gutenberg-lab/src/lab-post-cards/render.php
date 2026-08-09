@@ -27,6 +27,10 @@ $source        = isset( $attributes['source'] ) ? sanitize_key( $attributes['sou
 $is_manual     = ( 'manual' === $source );
 $cta_text      = isset( $attributes['ctaText'] ) ? sanitize_text_field( $attributes['ctaText'] ) : __( 'Read more', 'gutenberg-lab' );
 $show_cta      = ! isset( $attributes['showCta'] ) || (bool) $attributes['showCta'];
+$show_terms    = ! empty( $attributes['showTerms'] );
+$show_cats     = ! isset( $attributes['showCategories'] ) || (bool) $attributes['showCategories'];
+$show_tags     = ! empty( $attributes['showTags'] );
+$max_terms     = isset( $attributes['maxTerms'] ) ? max( 0, min( 20, (int) $attributes['maxTerms'] ) ) : 3;
 $excerpt_lines = isset( $attributes['excerptLines'] ) ? max( 1, min( 12, (int) $attributes['excerptLines'] ) ) : 3;
 
 $allowed_orderby = array( 'date', 'title', 'modified' );
@@ -87,7 +91,17 @@ $wrapper_attributes = get_block_wrapper_attributes(
 			<?php
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				echo gutenberg_lab_render_post_card( get_post(), $cta_text, $show_cta ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo gutenberg_lab_render_post_card(
+					get_post(),
+					array(
+						'cta_text'        => $cta_text,
+						'show_cta'        => $show_cta,
+						'show_terms'      => $show_terms,
+						'show_categories' => $show_cats,
+						'show_tags'       => $show_tags,
+						'max_terms'       => $max_terms,
+					)
+				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			wp_reset_postdata();
 			?>

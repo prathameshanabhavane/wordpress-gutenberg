@@ -13,23 +13,15 @@ import {
 	Spinner,
 	Notice,
 	ToggleControl,
+	CheckboxControl,
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useMemo, useState } from '@wordpress/element';
-import { decodeEntities } from '@wordpress/html-entities';
+import PostCardPreview from './post-card-preview';
+import { getPostTitle } from './utils';
 import './editor.scss';
-
-/**
- * @param {Object} post
- * @return {string} Plain title.
- */
-function getPostTitle( post ) {
-	return decodeEntities(
-		post?.title?.rendered?.replace( /<[^>]+>/g, '' ) || ''
-	);
-}
 
 /**
  * @param {Object}   props
@@ -49,6 +41,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		selectedPostIds = [],
 		ctaText,
 		showCta = true,
+		showTerms = false,
+		showCategories = true,
+		showTags = false,
+		maxTerms = 3,
 		excerptLines,
 		source = 'query',
 	} = attributes;
@@ -92,7 +88,6 @@ export default function Edit( { attributes, setAttributes } ) {
 					query.tags = [ tagId ];
 				}
 			} else {
-				// Manual with nothing mapped yet.
 				query.include = [ 0 ];
 				query.per_page = 1;
 			}
@@ -197,7 +192,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		return map;
 	}, [ selectedPosts, posts, searchedPosts ] );
 
-	/** Keep mapped list in selectedPostIds order. */
 	const mappedPosts = useMemo(
 		() =>
 			( selectedPostIds || [] ).map( ( id ) => ( {
@@ -536,6 +530,73 @@ export default function Edit( { attributes, setAttributes } ) {
 					</PanelBody>
 				) }
 
+				<PanelBody
+					title={ __( 'Card content', 'gutenberg-lab' ) }
+					initialOpen={ true }
+				>
+					<ToggleControl
+						label={ __( 'Show terms', 'gutenberg-lab' ) }
+						help={ __(
+							'Applies to all cards. Each card only shows terms mapped to that post.',
+							'gutenberg-lab'
+						) }
+						checked={ !! showTerms }
+						onChange={ ( value ) =>
+							setAttributes( { showTerms: value } )
+						}
+					/>
+					{ showTerms && (
+						<>
+							<CheckboxControl
+								label={ __( 'Categories', 'gutenberg-lab' ) }
+								checked={ !! showCategories }
+								onChange={ ( value ) =>
+									setAttributes( { showCategories: value } )
+								}
+							/>
+							<CheckboxControl
+								label={ __( 'Tags', 'gutenberg-lab' ) }
+								checked={ !! showTags }
+								onChange={ ( value ) =>
+									setAttributes( { showTags: value } )
+								}
+							/>
+							<RangeControl
+								label={ __(
+									'Max terms per type',
+									'gutenberg-lab'
+								) }
+								value={ maxTerms }
+								onChange={ ( value ) =>
+									setAttributes( { maxTerms: value } )
+								}
+								min={ 1 }
+								max={ 10 }
+								help={ __(
+									'Limits how many categories or tags appear on each card.',
+									'gutenberg-lab'
+								) }
+							/>
+						</>
+					) }
+					<ToggleControl
+						label={ __( 'Show CTA button', 'gutenberg-lab' ) }
+						checked={ !! showCta }
+						onChange={ ( value ) =>
+							setAttributes( { showCta: value } )
+						}
+					/>
+					{ showCta && (
+						<TextControl
+							label={ __( 'CTA text', 'gutenberg-lab' ) }
+							value={ ctaText }
+							onChange={ ( value ) =>
+								setAttributes( { ctaText: value } )
+							}
+						/>
+					) }
+				</PanelBody>
+
 				<PanelBody title={ __( 'Layout', 'gutenberg-lab' ) }>
 					<RangeControl
 						label={ __( 'Columns', 'gutenberg-lab' ) }
@@ -559,22 +620,6 @@ export default function Edit( { attributes, setAttributes } ) {
 							'gutenberg-lab'
 						) }
 					/>
-					<ToggleControl
-						label={ __( 'Show CTA button', 'gutenberg-lab' ) }
-						checked={ !! showCta }
-						onChange={ ( value ) =>
-							setAttributes( { showCta: value } )
-						}
-					/>
-					{ showCta && (
-						<TextControl
-							label={ __( 'CTA text', 'gutenberg-lab' ) }
-							value={ ctaText }
-							onChange={ ( value ) =>
-								setAttributes( { ctaText: value } )
-							}
-						/>
-					) }
 				</PanelBody>
 			</InspectorControls>
 
@@ -598,54 +643,18 @@ export default function Edit( { attributes, setAttributes } ) {
 					</Notice>
 				) }
 				<div className="lab-cards__grid">
-					{ list.map( ( post ) => {
-						const title =
-							getPostTitle( post ) ||
-							__( '(no title)', 'gutenberg-lab' );
-						const excerpt = decodeEntities(
-							post.excerpt?.rendered?.replace( /<[^>]+>/g, '' ) ||
-								''
-						);
-						const image =
-							post._embedded?.[ 'wp:featuredmedia' ]?.[ 0 ]
-								?.source_url || '';
-
-						return (
-							<article
-								key={ post.id }
-								className="lab-card lab-post-card"
-							>
-								{ image ? (
-									<div className="lab-card__media">
-										<img
-											className="lab-card__image"
-											src={ image }
-											alt={ title }
-										/>
-									</div>
-								) : null }
-								<div className="lab-card__body">
-									<h3 className="lab-card__title">{ title }</h3>
-									{ excerpt ? (
-										<div className="lab-card__description">
-											<p>{ excerpt }</p>
-										</div>
-									) : null }
-									{ showCta ? (
-										<p className="lab-card__cta-wrap">
-											<span className="lab-card__cta">
-												{ ctaText ||
-													__(
-														'Read more',
-														'gutenberg-lab'
-													) }
-											</span>
-										</p>
-									) : null }
-								</div>
-							</article>
-						);
-					} ) }
+					{ list.map( ( post ) => (
+						<PostCardPreview
+							key={ post.id }
+							post={ post }
+							showCta={ showCta }
+							ctaText={ ctaText }
+							showTerms={ showTerms }
+							showCategories={ showCategories }
+							showTags={ showTags }
+							maxTerms={ maxTerms }
+						/>
+					) ) }
 				</div>
 			</div>
 		</>
