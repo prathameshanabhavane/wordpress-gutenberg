@@ -1,0 +1,19 @@
+/**
+ * Editor-only styles for Lab Post Cards.
+ */
+
+.lab-post-cards__loading {
+	display: flex;
+	justify-content: center;
+	padding: 1.5rem;
+}
+
+.lab-post-cards__help {
+	margin: 0.5rem 0 0;
+	font-size: 12px;
+	color: #757575;
+}
+
+.editor-styles-wrapper .lab-post-card .lab-card__cta {
+	pointer-events: none;
+}

@@ -428,6 +428,81 @@ return array(
 		'style' => 'file:./style-index.css',
 		'render' => 'file:./render.php'
 	),
+	'lab-post-cards' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-post-cards',
+		'version' => '0.1.0',
+		'title' => 'Lab Post Cards',
+		'category' => 'widgets',
+		'icon' => 'admin-post',
+		'description' => 'Query posts by search, category, or tag and map them into Lab Card UI.',
+		'keywords' => array(
+			'posts',
+			'cards',
+			'query',
+			'category',
+			'tag',
+			'search',
+			'lab'
+		),
+		'attributes' => array(
+			'columns' => array(
+				'type' => 'number',
+				'default' => 3
+			),
+			'postsToShow' => array(
+				'type' => 'number',
+				'default' => 6
+			),
+			'orderBy' => array(
+				'type' => 'string',
+				'default' => 'date'
+			),
+			'order' => array(
+				'type' => 'string',
+				'default' => 'desc'
+			),
+			'search' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'categoryId' => array(
+				'type' => 'number',
+				'default' => 0
+			),
+			'tagId' => array(
+				'type' => 'number',
+				'default' => 0
+			),
+			'selectedPostIds' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'ctaText' => array(
+				'type' => 'string',
+				'default' => 'Read more'
+			),
+			'excerptLines' => array(
+				'type' => 'number',
+				'default' => 3
+			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide',
+				'full'
+			),
+			'html' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
 	'lab-repeater' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,

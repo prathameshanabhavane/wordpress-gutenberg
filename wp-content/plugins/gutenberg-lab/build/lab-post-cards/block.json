@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-post-cards",
+  "version": "0.1.0",
+  "title": "Lab Post Cards",
+  "category": "widgets",
+  "icon": "admin-post",
+  "description": "Query posts by search, category, or tag and map them into Lab Card UI.",
+  "keywords": [
+    "posts",
+    "cards",
+    "query",
+    "category",
+    "tag",
+    "search",
+    "lab"
+  ],
+  "attributes": {
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "postsToShow": {
+      "type": "number",
+      "default": 6
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "date"
+    },
+    "order": {
+      "type": "string",
+      "default": "desc"
+    },
+    "search": {
+      "type": "string",
+      "default": ""
+    },
+    "categoryId": {
+      "type": "number",
+      "default": 0
+    },
+    "tagId": {
+      "type": "number",
+      "default": 0
+    },
+    "selectedPostIds": {
+      "type": "array",
+      "default": []
+    },
+    "ctaText": {
+      "type": "string",
+      "default": "Read more"
+    },
+    "excerptLines": {
+      "type": "number",
+      "default": 3
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
