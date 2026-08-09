@@ -18,9 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/includes/lab-field-ui-display.php';
 require_once __DIR__ . '/includes/lab-post-card.php';
+require_once __DIR__ . '/includes/lab-term-card.php';
 
 /**
- * Register Lab Cards, Lab Form Fields, Lab Fields UI, and Lab Post Cards.
+ * Register Lab Cards, Lab Form Fields, Lab Fields UI, Lab Post Cards, and term cards.
  */
 function create_block_gutenberg_lab_block_init() {
 	$manifest = __DIR__ . '/build/blocks-manifest.php';
@@ -41,6 +42,8 @@ function create_block_gutenberg_lab_block_init() {
 		'lab-repeater',
 		'lab-repeater-row',
 		'lab-post-cards',
+		'lab-category-cards',
+		'lab-tag-cards',
 	);
 	foreach ( $blocks as $block ) {
 		$block_path = __DIR__ . '/build/' . $block;

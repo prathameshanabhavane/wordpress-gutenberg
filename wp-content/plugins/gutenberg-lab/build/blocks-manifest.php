@@ -138,6 +138,87 @@ return array(
 		'style' => 'file:./style-index.css',
 		'render' => 'file:./render.php'
 	),
+	'lab-category-cards' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-category-cards',
+		'version' => '0.1.0',
+		'title' => 'Lab Category Cards',
+		'category' => 'widgets',
+		'icon' => 'category',
+		'description' => 'Display categories as cards. Choose All, Include only, or Exclude specific categories.',
+		'keywords' => array(
+			'category',
+			'categories',
+			'cards',
+			'taxonomy',
+			'lab'
+		),
+		'attributes' => array(
+			'columns' => array(
+				'type' => 'number',
+				'default' => 3
+			),
+			'termsToShow' => array(
+				'type' => 'number',
+				'default' => 12
+			),
+			'orderBy' => array(
+				'type' => 'string',
+				'default' => 'name'
+			),
+			'order' => array(
+				'type' => 'string',
+				'default' => 'asc'
+			),
+			'source' => array(
+				'type' => 'string',
+				'default' => 'all'
+			),
+			'selectedTermIds' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'hideEmpty' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showDescription' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showCount' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showCta' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'ctaText' => array(
+				'type' => 'string',
+				'default' => 'View posts'
+			),
+			'descriptionLines' => array(
+				'type' => 'number',
+				'default' => 3
+			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide',
+				'full'
+			),
+			'html' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
 	'lab-field-ui' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
@@ -599,6 +680,87 @@ return array(
 		'supports' => array(
 			'html' => false,
 			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-tag-cards' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-tag-cards',
+		'version' => '0.1.0',
+		'title' => 'Lab Tag Cards',
+		'category' => 'widgets',
+		'icon' => 'tag',
+		'description' => 'Display tags as cards. Choose All, Include only, or Exclude specific tags.',
+		'keywords' => array(
+			'tag',
+			'tags',
+			'cards',
+			'taxonomy',
+			'lab'
+		),
+		'attributes' => array(
+			'columns' => array(
+				'type' => 'number',
+				'default' => 3
+			),
+			'termsToShow' => array(
+				'type' => 'number',
+				'default' => 12
+			),
+			'orderBy' => array(
+				'type' => 'string',
+				'default' => 'name'
+			),
+			'order' => array(
+				'type' => 'string',
+				'default' => 'asc'
+			),
+			'source' => array(
+				'type' => 'string',
+				'default' => 'all'
+			),
+			'selectedTermIds' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'hideEmpty' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showDescription' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showCount' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showCta' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'ctaText' => array(
+				'type' => 'string',
+				'default' => 'View posts'
+			),
+			'descriptionLines' => array(
+				'type' => 'number',
+				'default' => 3
+			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide',
+				'full'
+			),
+			'html' => false
 		),
 		'textdomain' => 'gutenberg-lab',
 		'editorScript' => 'file:./index.js',
