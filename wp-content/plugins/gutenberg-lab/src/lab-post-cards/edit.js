@@ -20,6 +20,7 @@ import {
 import { useSelect } from '@wordpress/data';
 import { useMemo, useState } from '@wordpress/element';
 import PostCardPreview from './post-card-preview';
+import TermAllowlistControl from './term-allowlist-control';
 import { getPostTitle } from './utils';
 import './editor.scss';
 
@@ -43,8 +44,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		showCta = true,
 		showTerms = false,
 		showCategories = true,
-		showTags = false,
+		showTags = true,
 		maxTerms = 3,
+		selectedTermIds = [],
 		excerptLines,
 		source = 'query',
 	} = attributes;
@@ -534,67 +536,89 @@ export default function Edit( { attributes, setAttributes } ) {
 					title={ __( 'Card content', 'gutenberg-lab' ) }
 					initialOpen={ true }
 				>
-					<ToggleControl
-						label={ __( 'Show terms', 'gutenberg-lab' ) }
-						help={ __(
-							'Applies to all cards. Each card only shows terms mapped to that post.',
-							'gutenberg-lab'
-						) }
-						checked={ !! showTerms }
-						onChange={ ( value ) =>
-							setAttributes( { showTerms: value } )
-						}
-					/>
-					{ showTerms && (
-						<>
-							<CheckboxControl
-								label={ __( 'Categories', 'gutenberg-lab' ) }
-								checked={ !! showCategories }
-								onChange={ ( value ) =>
-									setAttributes( { showCategories: value } )
-								}
-							/>
-							<CheckboxControl
-								label={ __( 'Tags', 'gutenberg-lab' ) }
-								checked={ !! showTags }
-								onChange={ ( value ) =>
-									setAttributes( { showTags: value } )
-								}
-							/>
-							<RangeControl
-								label={ __(
-									'Max terms per type',
-									'gutenberg-lab'
-								) }
-								value={ maxTerms }
-								onChange={ ( value ) =>
-									setAttributes( { maxTerms: value } )
-								}
-								min={ 1 }
-								max={ 10 }
-								help={ __(
-									'Limits how many categories or tags appear on each card.',
-									'gutenberg-lab'
-								) }
-							/>
-						</>
-					) }
-					<ToggleControl
-						label={ __( 'Show CTA button', 'gutenberg-lab' ) }
-						checked={ !! showCta }
-						onChange={ ( value ) =>
-							setAttributes( { showCta: value } )
-						}
-					/>
-					{ showCta && (
-						<TextControl
-							label={ __( 'CTA text', 'gutenberg-lab' ) }
-							value={ ctaText }
+					<div className="lab-post-cards__panel-section">
+						<ToggleControl
+							label={ __( 'Show terms', 'gutenberg-lab' ) }
+							help={ __(
+								'Off by default. When on, cards can show category and tag badges. Each card only shows terms assigned to that post.',
+								'gutenberg-lab'
+							) }
+							checked={ !! showTerms }
 							onChange={ ( value ) =>
-								setAttributes( { ctaText: value } )
+								setAttributes( { showTerms: value } )
 							}
 						/>
-					) }
+						{ showTerms && (
+							<div className="lab-post-cards__panel-stack">
+								<CheckboxControl
+									label={ __(
+										'Categories',
+										'gutenberg-lab'
+									) }
+									checked={ !! showCategories }
+									onChange={ ( value ) =>
+										setAttributes( {
+											showCategories: value,
+										} )
+									}
+								/>
+								<CheckboxControl
+									label={ __( 'Tags', 'gutenberg-lab' ) }
+									checked={ !! showTags }
+									onChange={ ( value ) =>
+										setAttributes( { showTags: value } )
+									}
+								/>
+								<RangeControl
+									label={ __(
+										'Max terms per type',
+										'gutenberg-lab'
+									) }
+									value={ maxTerms }
+									onChange={ ( value ) =>
+										setAttributes( { maxTerms: value } )
+									}
+									min={ 1 }
+									max={ 10 }
+									help={ __(
+										'Maximum category or tag badges shown on each card.',
+										'gutenberg-lab'
+									) }
+								/>
+								<TermAllowlistControl
+									value={ selectedTermIds }
+									onChange={ ( ids ) =>
+										setAttributes( {
+											selectedTermIds: ids,
+										} )
+									}
+									showCategories={ showCategories }
+									showTags={ showTags }
+								/>
+							</div>
+						) }
+					</div>
+
+					<div className="lab-post-cards__panel-section lab-post-cards__panel-section--cta">
+						<ToggleControl
+							label={ __( 'Show CTA button', 'gutenberg-lab' ) }
+							checked={ !! showCta }
+							onChange={ ( value ) =>
+								setAttributes( { showCta: value } )
+							}
+						/>
+						{ showCta && (
+							<div className="lab-post-cards__panel-stack">
+								<TextControl
+									label={ __( 'CTA text', 'gutenberg-lab' ) }
+									value={ ctaText }
+									onChange={ ( value ) =>
+										setAttributes( { ctaText: value } )
+									}
+								/>
+							</div>
+						) }
+					</div>
 				</PanelBody>
 
 				<PanelBody title={ __( 'Layout', 'gutenberg-lab' ) }>
@@ -653,6 +677,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							showCategories={ showCategories }
 							showTags={ showTags }
 							maxTerms={ maxTerms }
+							selectedTermIds={ selectedTermIds }
 						/>
 					) ) }
 				</div>

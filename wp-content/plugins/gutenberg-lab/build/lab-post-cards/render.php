@@ -29,8 +29,11 @@ $cta_text      = isset( $attributes['ctaText'] ) ? sanitize_text_field( $attribu
 $show_cta      = ! isset( $attributes['showCta'] ) || (bool) $attributes['showCta'];
 $show_terms    = ! empty( $attributes['showTerms'] );
 $show_cats     = ! isset( $attributes['showCategories'] ) || (bool) $attributes['showCategories'];
-$show_tags     = ! empty( $attributes['showTags'] );
+$show_tags     = ! isset( $attributes['showTags'] ) || (bool) $attributes['showTags'];
 $max_terms     = isset( $attributes['maxTerms'] ) ? max( 0, min( 20, (int) $attributes['maxTerms'] ) ) : 3;
+$term_ids      = isset( $attributes['selectedTermIds'] ) && is_array( $attributes['selectedTermIds'] )
+	? array_values( array_filter( array_map( 'absint', $attributes['selectedTermIds'] ) ) )
+	: array();
 $excerpt_lines = isset( $attributes['excerptLines'] ) ? max( 1, min( 12, (int) $attributes['excerptLines'] ) ) : 3;
 
 $allowed_orderby = array( 'date', 'title', 'modified' );
@@ -100,6 +103,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 						'show_categories' => $show_cats,
 						'show_tags'       => $show_tags,
 						'max_terms'       => $max_terms,
+						'term_ids'        => $term_ids,
 					)
 				); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}

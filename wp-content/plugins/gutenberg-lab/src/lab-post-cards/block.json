@@ -63,11 +63,15 @@
 		},
 		"showTags": {
 			"type": "boolean",
-			"default": false
+			"default": true
 		},
 		"maxTerms": {
 			"type": "number",
 			"default": 3
+		},
+		"selectedTermIds": {
+			"type": "array",
+			"default": []
 		},
 		"excerptLines": {
 			"type": "number",

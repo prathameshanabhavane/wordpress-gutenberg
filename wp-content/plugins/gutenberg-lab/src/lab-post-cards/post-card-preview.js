@@ -5,14 +5,15 @@ import { __ } from '@wordpress/i18n';
 import { getPostExcerpt, getPostTitle, getPostTerms } from './utils';
 
 /**
- * @param {Object}  props
- * @param {Object}  props.post
- * @param {boolean} props.showCta
- * @param {string}  props.ctaText
- * @param {boolean} props.showTerms
- * @param {boolean} props.showCategories
- * @param {boolean} props.showTags
- * @param {number}  props.maxTerms
+ * @param {Object}   props
+ * @param {Object}   props.post
+ * @param {boolean}  props.showCta
+ * @param {string}   props.ctaText
+ * @param {boolean}  props.showTerms
+ * @param {boolean}  props.showCategories
+ * @param {boolean}  props.showTags
+ * @param {number}   props.maxTerms
+ * @param {number[]} props.selectedTermIds
  * @return {Element}
  */
 export default function PostCardPreview( {
@@ -23,13 +24,19 @@ export default function PostCardPreview( {
 	showCategories,
 	showTags,
 	maxTerms,
+	selectedTermIds = [],
 } ) {
 	const title = getPostTitle( post ) || __( '(no title)', 'gutenberg-lab' );
 	const excerpt = getPostExcerpt( post );
 	const image =
 		post._embedded?.[ 'wp:featuredmedia' ]?.[ 0 ]?.source_url || '';
 	const terms = showTerms
-		? getPostTerms( post, { showCategories, showTags, maxTerms } )
+		? getPostTerms( post, {
+				showCategories,
+				showTags,
+				maxTerms,
+				selectedTermIds,
+		  } )
 		: [];
 
 	return (

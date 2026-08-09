@@ -12,18 +12,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Collect post terms for card display.
  *
- * @param int    $post_id  Post ID.
- * @param string $taxonomy Taxonomy name.
- * @param int    $limit    Max terms (0 = all).
+ * @param int   $post_id     Post ID.
+ * @param string $taxonomy   Taxonomy name.
+ * @param int   $limit       Max terms (0 = all).
+ * @param int[] $include_ids Optional allowlist of term IDs (empty = all).
  * @return WP_Term[]
  */
-function gutenberg_lab_get_post_card_terms( $post_id, $taxonomy, $limit = 0 ) {
+function gutenberg_lab_get_post_card_terms( $post_id, $taxonomy, $limit = 0, $include_ids = array() ) {
 	$terms = get_the_terms( $post_id, $taxonomy );
 	if ( empty( $terms ) || is_wp_error( $terms ) ) {
 		return array();
 	}
 
 	$terms = array_values( $terms );
+
+	if ( ! empty( $include_ids ) ) {
+		$include_ids = array_map( 'absint', $include_ids );
+		$terms       = array_values(
+			array_filter(
+				$terms,
+				static function ( $term ) use ( $include_ids ) {
+					return in_array( (int) $term->term_id, $include_ids, true );
+				}
+			)
+		);
+	}
+
 	if ( $limit > 0 ) {
 		$terms = array_slice( $terms, 0, $limit );
 	}
@@ -36,9 +50,10 @@ function gutenberg_lab_get_post_card_terms( $post_id, $taxonomy, $limit = 0 ) {
  *
  * @param int   $post_id Post ID.
  * @param array $args {
- *     @type bool $show_categories Show category terms.
- *     @type bool $show_tags       Show tag terms.
- *     @type int  $max_terms       Max terms per taxonomy (0 = all).
+ *     @type bool  $show_categories Show category terms.
+ *     @type bool  $show_tags       Show tag terms.
+ *     @type int   $max_terms       Max terms per taxonomy (0 = all).
+ *     @type int[] $term_ids        Optional allowlist (empty = all mapped).
  * }
  * @return string HTML or empty string.
  */
@@ -47,22 +62,37 @@ function gutenberg_lab_render_post_card_terms( $post_id, $args = array() ) {
 		$args,
 		array(
 			'show_categories' => false,
-			'show_tags'       => false,
+			'show_tags'       => true,
 			'max_terms'       => 3,
+			'term_ids'        => array(),
 		)
 	);
+
+	$include_ids = is_array( $args['term_ids'] )
+		? array_values( array_filter( array_map( 'absint', $args['term_ids'] ) ) )
+		: array();
 
 	$groups = array();
 
 	if ( $args['show_categories'] ) {
-		$categories = gutenberg_lab_get_post_card_terms( $post_id, 'category', (int) $args['max_terms'] );
+		$categories = gutenberg_lab_get_post_card_terms(
+			$post_id,
+			'category',
+			(int) $args['max_terms'],
+			$include_ids
+		);
 		if ( $categories ) {
 			$groups['category'] = $categories;
 		}
 	}
 
 	if ( $args['show_tags'] ) {
-		$tags = gutenberg_lab_get_post_card_terms( $post_id, 'post_tag', (int) $args['max_terms'] );
+		$tags = gutenberg_lab_get_post_card_terms(
+			$post_id,
+			'post_tag',
+			(int) $args['max_terms'],
+			$include_ids
+		);
 		if ( $tags ) {
 			$groups['post_tag'] = $tags;
 		}
@@ -120,8 +150,9 @@ function gutenberg_lab_render_post_card( $post, $args = array() ) {
 			'show_cta'        => true,
 			'show_terms'      => false,
 			'show_categories' => true,
-			'show_tags'       => false,
+			'show_tags'       => true,
 			'max_terms'       => 3,
+			'term_ids'        => array(),
 		)
 	);
 
@@ -164,6 +195,7 @@ function gutenberg_lab_render_post_card( $post, $args = array() ) {
 				'show_categories' => (bool) $args['show_categories'],
 				'show_tags'       => (bool) $args['show_tags'],
 				'max_terms'       => (int) $args['max_terms'],
+				'term_ids'        => is_array( $args['term_ids'] ) ? $args['term_ids'] : array(),
 			)
 		);
 	}

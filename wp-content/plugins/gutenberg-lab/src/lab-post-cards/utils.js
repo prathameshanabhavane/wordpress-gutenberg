@@ -27,16 +27,22 @@ export function getPostExcerpt( post ) {
  * Collect embedded terms for the selected taxonomies.
  * Returns [] when the post has none — caller should skip rendering.
  *
- * @param {Object}  post
- * @param {Object}  options
- * @param {boolean} options.showCategories
- * @param {boolean} options.showTags
- * @param {number}  options.maxTerms
+ * @param {Object}   post
+ * @param {Object}   options
+ * @param {boolean}  options.showCategories
+ * @param {boolean}  options.showTags
+ * @param {number}   options.maxTerms
+ * @param {number[]} [options.selectedTermIds] Empty = all mapped terms.
  * @return {Array<{ id: number, name: string, taxonomy: string }>}
  */
 export function getPostTerms(
 	post,
-	{ showCategories = false, showTags = false, maxTerms = 3 } = {}
+	{
+		showCategories = false,
+		showTags = false,
+		maxTerms = 3,
+		selectedTermIds = [],
+	} = {}
 ) {
 	if ( ! showCategories && ! showTags ) {
 		return [];
@@ -47,19 +53,27 @@ export function getPostTerms(
 		return [];
 	}
 
-	const allowed = new Set();
+	const allowedTaxonomies = new Set();
 	if ( showCategories ) {
-		allowed.add( 'category' );
+		allowedTaxonomies.add( 'category' );
 	}
 	if ( showTags ) {
-		allowed.add( 'post_tag' );
+		allowedTaxonomies.add( 'post_tag' );
 	}
+
+	const allowlist =
+		Array.isArray( selectedTermIds ) && selectedTermIds.length > 0
+			? new Set( selectedTermIds.map( Number ) )
+			: null;
 
 	const counts = { category: 0, post_tag: 0 };
 	const terms = [];
 
 	embedded.flat().forEach( ( term ) => {
-		if ( ! term?.taxonomy || ! allowed.has( term.taxonomy ) ) {
+		if ( ! term?.taxonomy || ! allowedTaxonomies.has( term.taxonomy ) ) {
+			return;
+		}
+		if ( allowlist && ! allowlist.has( Number( term.id ) ) ) {
 			return;
 		}
 		if ( maxTerms > 0 && counts[ term.taxonomy ] >= maxTerms ) {

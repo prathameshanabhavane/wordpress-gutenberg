@@ -503,11 +503,17 @@ return array(
 			),
 			'showTags' => array(
 				'type' => 'boolean',
-				'default' => false
+				'default' => true
 			),
 			'maxTerms' => array(
 				'type' => 'number',
 				'default' => 3
+			),
+			'selectedTermIds' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
 			),
 			'excerptLines' => array(
 				'type' => 'number',

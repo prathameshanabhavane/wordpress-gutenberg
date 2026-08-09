@@ -1,1 +1,85 @@
-.lab-form-fields.wp-block-create-block-lab-form-fields,.wp-block-create-block-lab-form-fields.lab-form-fields{--lab-form-bg:#fff;--lab-form-border:#e5e5e5;--lab-form-fg:#0a0a0a;--lab-form-muted:#737373;--lab-form-primary:#171717;--lab-form-primary-fg:#fafafa;--lab-form-radius:0.75rem;--lab-form-pad:1.25rem;background:var(--lab-form-bg);border:1px solid var(--lab-form-border);border-radius:var(--lab-form-radius);box-sizing:border-box;color:var(--lab-form-fg);display:block;font:inherit;margin:0;padding:var(--lab-form-pad);width:100%}.lab-form-fields__form{border:0;margin:0;padding:0}.lab-form-fields__list{display:flex;flex-direction:column}.lab-form-fields__list>*{margin:0 0 1.1rem}.lab-form-fields__list>:last-child{margin-bottom:0}.lab-form-fields__actions{border-top:1px solid var(--lab-form-border);margin:1.25rem 0 0;padding-top:1rem}.lab-form-fields__submit{appearance:none;background:var(--lab-form-primary);border:1px solid transparent;border-radius:.5rem;color:var(--lab-form-primary-fg);cursor:pointer;display:inline-block;font:inherit;font-size:.875rem;font-weight:600;line-height:1.25;margin:0;padding:.6rem 1.15rem;-webkit-tap-highlight-color:rgba(0,0,0,0);transition:opacity .15s ease,box-shadow .15s ease}.lab-form-fields button.lab-form-fields__submit,.lab-form-fields__form .lab-form-fields__submit{border-radius:.5rem}.lab-form-fields__submit:hover{opacity:.92}.lab-form-fields__submit:focus-visible{box-shadow:0 0 0 3px hsla(0,0%,9%,.2);outline:none}
+/*!*******************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/lab-form-fields/style.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+/**
+ * Lab Form Fields parent — themeable shell (shadcn-like tokens).
+ */
+.wp-block-create-block-lab-form-fields.lab-form-fields,
+.lab-form-fields.wp-block-create-block-lab-form-fields {
+  --lab-form-bg: #ffffff;
+  --lab-form-border: #e5e5e5;
+  --lab-form-fg: #0a0a0a;
+  --lab-form-muted: #737373;
+  --lab-form-primary: #171717;
+  --lab-form-primary-fg: #fafafa;
+  --lab-form-radius: 0.75rem;
+  --lab-form-pad: 1.25rem;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--lab-form-pad);
+  border: 1px solid var(--lab-form-border);
+  border-radius: var(--lab-form-radius);
+  background: var(--lab-form-bg);
+  color: var(--lab-form-fg);
+  font: inherit;
+}
+
+.lab-form-fields__form {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.lab-form-fields__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.lab-form-fields__list > * {
+  margin: 0 0 1.1rem;
+}
+
+.lab-form-fields__list > *:last-child {
+  margin-bottom: 0;
+}
+
+.lab-form-fields__actions {
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--lab-form-border);
+}
+
+.lab-form-fields__submit {
+  display: inline-block;
+  margin: 0;
+  padding: 0.6rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: var(--lab-form-primary);
+  color: var(--lab-form-primary-fg);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lab-form-fields button.lab-form-fields__submit,
+.lab-form-fields__form .lab-form-fields__submit {
+  border-radius: 0.5rem;
+}
+
+.lab-form-fields__submit:hover {
+  opacity: 0.92;
+}
+
+.lab-form-fields__submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(23, 23, 23, 0.2);
+}

@@ -1,1 +1,39 @@
-.lab-fields-ui.wp-block-create-block-lab-fields-ui,.wp-block-create-block-lab-fields-ui.lab-fields-ui{--lab-ui-bg:#fff;--lab-ui-border:#e5e5e5;--lab-ui-fg:#0a0a0a;--lab-ui-muted:#737373;--lab-ui-radius:0.75rem;--lab-ui-pad:1.25rem;background:var(--lab-ui-bg);border:1px solid var(--lab-ui-border);border-radius:var(--lab-ui-radius);box-sizing:border-box;color:var(--lab-ui-fg);display:block;font:inherit;margin:0;padding:var(--lab-ui-pad);width:100%}.lab-fields-ui__list{display:flex;flex-direction:column}.lab-fields-ui__list>*{margin:0 0 1rem}.lab-fields-ui__list>:last-child{margin-bottom:0}
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/lab-fields-ui/style.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+/**
+ * Lab Fields UI parent — display shell (no form / submit).
+ */
+.wp-block-create-block-lab-fields-ui.lab-fields-ui,
+.lab-fields-ui.wp-block-create-block-lab-fields-ui {
+  --lab-ui-bg: #ffffff;
+  --lab-ui-border: #e5e5e5;
+  --lab-ui-fg: #0a0a0a;
+  --lab-ui-muted: #737373;
+  --lab-ui-radius: 0.75rem;
+  --lab-ui-pad: 1.25rem;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--lab-ui-pad);
+  border: 1px solid var(--lab-ui-border);
+  border-radius: var(--lab-ui-radius);
+  background: var(--lab-ui-bg);
+  color: var(--lab-ui-fg);
+  font: inherit;
+}
+
+.lab-fields-ui__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.lab-fields-ui__list > * {
+  margin: 0 0 1rem;
+}
+
+.lab-fields-ui__list > *:last-child {
+  margin-bottom: 0;
+}
