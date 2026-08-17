@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/lab-tabs",
+	"version": "0.1.0",
+	"title": "Lab Tabs",
+	"category": "widgets",
+	"icon": "index-card",
+	"description": "Add tabs as needed. Each tab holds an accordion for FAQ-style or sectioned content.",
+	"keywords": [ "tabs", "tab", "accordion", "sections", "lab" ],
+	"allowedBlocks": [ "create-block/lab-tab" ],
+	"attributes": {},
+	"supports": {
+		"align": [ "wide", "full" ],
+		"html": false
+	},
+	"textdomain": "gutenberg-lab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

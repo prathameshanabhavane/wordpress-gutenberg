@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-accordion",
+  "version": "0.1.0",
+  "title": "Lab Accordion",
+  "category": "widgets",
+  "icon": "editor-justify",
+  "description": "Add accordion items as needed. Each item can hold cards, a review slider, text, and fields.",
+  "keywords": [
+    "accordion",
+    "faq",
+    "collapse",
+    "lab"
+  ],
+  "parent": [
+    "create-block/lab-tab"
+  ],
+  "allowedBlocks": [
+    "create-block/lab-accordion-item"
+  ],
+  "attributes": {
+    "allowMultiple": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

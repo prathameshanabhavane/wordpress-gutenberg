@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/lab-accordion-item",
+	"version": "0.1.0",
+	"title": "Lab Accordion Item",
+	"category": "widgets",
+	"icon": "arrow-down-alt2",
+	"description": "One accordion section: title plus rich text, cards, review slider, checkbox/radio fields.",
+	"keywords": [ "accordion", "item", "section", "lab" ],
+	"parent": [ "create-block/lab-accordion" ],
+	"allowedBlocks": [
+		"core/paragraph",
+		"core/heading",
+		"create-block/lab-cards",
+		"create-block/lab-review-slider",
+		"create-block/lab-fields-ui",
+		"create-block/lab-form-fields"
+	],
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"openByDefault": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"textdomain": "gutenberg-lab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

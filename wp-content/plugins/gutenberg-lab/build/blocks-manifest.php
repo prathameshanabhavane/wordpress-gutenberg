@@ -1,6 +1,90 @@
 <?php
 // This file is generated. Do not modify it manually.
 return array(
+	'lab-accordion' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-accordion',
+		'version' => '0.1.0',
+		'title' => 'Lab Accordion',
+		'category' => 'widgets',
+		'icon' => 'editor-justify',
+		'description' => 'Add accordion items as needed. Each item can hold cards, a review slider, text, and fields.',
+		'keywords' => array(
+			'accordion',
+			'faq',
+			'collapse',
+			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-tab'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-accordion-item'
+		),
+		'attributes' => array(
+			'allowMultiple' => array(
+				'type' => 'boolean',
+				'default' => false
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'viewScript' => 'file:./view.js',
+		'render' => 'file:./render.php'
+	),
+	'lab-accordion-item' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-accordion-item',
+		'version' => '0.1.0',
+		'title' => 'Lab Accordion Item',
+		'category' => 'widgets',
+		'icon' => 'arrow-down-alt2',
+		'description' => 'One accordion section: title plus rich text, cards, review slider, checkbox/radio fields.',
+		'keywords' => array(
+			'accordion',
+			'item',
+			'section',
+			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-accordion'
+		),
+		'allowedBlocks' => array(
+			'core/paragraph',
+			'core/heading',
+			'create-block/lab-cards',
+			'create-block/lab-review-slider',
+			'create-block/lab-fields-ui',
+			'create-block/lab-form-fields'
+		),
+		'attributes' => array(
+			'title' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'openByDefault' => array(
+				'type' => 'boolean',
+				'default' => false
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
 	'lab-card' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
@@ -687,6 +771,90 @@ return array(
 		'style' => 'file:./style-index.css',
 		'render' => 'file:./render.php'
 	),
+	'lab-review-card' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-review-card',
+		'version' => '0.1.0',
+		'title' => 'Lab Review Card',
+		'category' => 'widgets',
+		'icon' => 'format-quote',
+		'description' => 'One review slide: quote, name, and star rating.',
+		'keywords' => array(
+			'review',
+			'testimonial',
+			'quote',
+			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-review-slider'
+		),
+		'attributes' => array(
+			'name' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'quote' => array(
+				'type' => 'string',
+				'default' => ''
+			),
+			'rating' => array(
+				'type' => 'number',
+				'default' => 5
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-review-slider' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-review-slider',
+		'version' => '0.1.0',
+		'title' => 'Lab Review Slider',
+		'category' => 'widgets',
+		'icon' => 'slides',
+		'description' => 'A slider of review cards. Add as many reviews as you need.',
+		'keywords' => array(
+			'review',
+			'slider',
+			'carousel',
+			'testimonial',
+			'lab'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-review-card'
+		),
+		'attributes' => array(
+			'autoplay' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'showDots' => array(
+				'type' => 'boolean',
+				'default' => true
+			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide'
+			),
+			'html' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'viewScript' => 'file:./view.js',
+		'render' => 'file:./render.php'
+	),
 	'lab-search' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
@@ -763,6 +931,121 @@ return array(
 					
 				)
 			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide',
+				'full'
+			),
+			'html' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'viewScript' => 'file:./view.js',
+		'render' => 'file:./render.php'
+	),
+	'lab-tab' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-tab',
+		'version' => '0.1.0',
+		'title' => 'Lab Tab',
+		'category' => 'widgets',
+		'icon' => 'table-row-after',
+		'description' => 'One tab panel. Holds an accordion. Rename the tab label in the sidebar or header.',
+		'keywords' => array(
+			'tab',
+			'panel',
+			'lab'
+		),
+		'parent' => array(
+			'create-block/lab-tabs'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-accordion'
+		),
+		'attributes' => array(
+			'tabLabel' => array(
+				'type' => 'string',
+				'default' => 'Tab'
+			)
+		),
+		'supports' => array(
+			'html' => false,
+			'reusable' => false
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php'
+	),
+	'lab-tab-suite' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-tab-suite',
+		'version' => '0.1.0',
+		'title' => 'Lab Tab Suite',
+		'category' => 'widgets',
+		'icon' => 'index-card',
+		'description' => 'One block: add tabs, then accordion items inside each tab, then simple fields (text, rich text, checkbox, radio, dropdown, textarea, toggle).',
+		'keywords' => array(
+			'tabs',
+			'accordion',
+			'fields',
+			'form',
+			'lab'
+		),
+		'attributes' => array(
+			'tabs' => array(
+				'type' => 'array',
+				'default' => array(
+					
+				)
+			),
+			'allowMultipleOpen' => array(
+				'type' => 'boolean',
+				'default' => false
+			)
+		),
+		'supports' => array(
+			'align' => array(
+				'wide',
+				'full'
+			),
+			'html' => false,
+			'reusable' => true
+		),
+		'textdomain' => 'gutenberg-lab',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'viewScript' => 'file:./view.js',
+		'render' => 'file:./render.php'
+	),
+	'lab-tabs' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
+		'apiVersion' => 3,
+		'name' => 'create-block/lab-tabs',
+		'version' => '0.1.0',
+		'title' => 'Lab Tabs',
+		'category' => 'widgets',
+		'icon' => 'index-card',
+		'description' => 'Add tabs as needed. Each tab holds an accordion for FAQ-style or sectioned content.',
+		'keywords' => array(
+			'tabs',
+			'tab',
+			'accordion',
+			'sections',
+			'lab'
+		),
+		'allowedBlocks' => array(
+			'create-block/lab-tab'
+		),
+		'attributes' => array(
+			
 		),
 		'supports' => array(
 			'align' => array(

@@ -1,0 +1,63 @@
+/**
+ * Lab Tabs — frontend.
+ */
+.wp-block-create-block-lab-tabs.lab-tabs,
+.lab-tabs {
+	--lab-tabs-border: #e5e5e5;
+	--lab-tabs-fg: #0a0a0a;
+	--lab-tabs-muted: #737373;
+	--lab-tabs-accent: #0a0a0a;
+	--lab-tabs-radius: 0.5rem;
+
+	box-sizing: border-box;
+	width: 100%;
+	color: var(--lab-tabs-fg);
+}
+
+.lab-tabs__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+	margin: 0 0 1rem;
+	padding: 0;
+	border-bottom: 1px solid var(--lab-tabs-border);
+}
+
+.lab-tabs__tab {
+	appearance: none;
+	margin: 0;
+	padding: 0.65rem 1rem;
+	border: 0;
+	border-bottom: 2px solid transparent;
+	margin-bottom: -1px;
+	background: transparent;
+	color: var(--lab-tabs-muted);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.lab-tabs__tab:hover,
+.lab-tabs__tab:focus-visible {
+	color: var(--lab-tabs-fg);
+	outline: none;
+}
+
+.lab-tabs__tab.is-active {
+	color: var(--lab-tabs-fg);
+	border-bottom-color: var(--lab-tabs-accent);
+}
+
+.lab-tabs__panel {
+	display: block;
+}
+
+.lab-tabs__panel[hidden] {
+	display: none !important;
+}
+
+.lab-tabs__empty {
+	margin: 0;
+	color: var(--lab-tabs-muted);
+	font-style: italic;
+}

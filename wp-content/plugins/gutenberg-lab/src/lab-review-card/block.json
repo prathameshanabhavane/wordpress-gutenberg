@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/lab-review-card",
+	"version": "0.1.0",
+	"title": "Lab Review Card",
+	"category": "widgets",
+	"icon": "format-quote",
+	"description": "One review slide: quote, name, and star rating.",
+	"keywords": [ "review", "testimonial", "quote", "lab" ],
+	"parent": [ "create-block/lab-review-slider" ],
+	"attributes": {
+		"name": {
+			"type": "string",
+			"default": ""
+		},
+		"quote": {
+			"type": "string",
+			"default": ""
+		},
+		"rating": {
+			"type": "number",
+			"default": 5
+		}
+	},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"textdomain": "gutenberg-lab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

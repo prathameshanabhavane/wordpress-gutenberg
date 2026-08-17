@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-tab-suite",
+  "version": "0.1.0",
+  "title": "Lab Tab Suite",
+  "category": "widgets",
+  "icon": "index-card",
+  "description": "One block: add tabs, then accordion items inside each tab, then simple fields (text, rich text, checkbox, radio, dropdown, textarea, toggle).",
+  "keywords": [
+    "tabs",
+    "accordion",
+    "fields",
+    "form",
+    "lab"
+  ],
+  "attributes": {
+    "tabs": {
+      "type": "array",
+      "default": []
+    },
+    "allowMultipleOpen": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "reusable": true
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

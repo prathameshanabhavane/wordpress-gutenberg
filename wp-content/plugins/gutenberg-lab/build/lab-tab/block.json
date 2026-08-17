@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "create-block/lab-tab",
+  "version": "0.1.0",
+  "title": "Lab Tab",
+  "category": "widgets",
+  "icon": "table-row-after",
+  "description": "One tab panel. Holds an accordion. Rename the tab label in the sidebar or header.",
+  "keywords": [
+    "tab",
+    "panel",
+    "lab"
+  ],
+  "parent": [
+    "create-block/lab-tabs"
+  ],
+  "allowedBlocks": [
+    "create-block/lab-accordion"
+  ],
+  "attributes": {
+    "tabLabel": {
+      "type": "string",
+      "default": "Tab"
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false
+  },
+  "textdomain": "gutenberg-lab",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

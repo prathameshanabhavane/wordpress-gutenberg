@@ -46,6 +46,13 @@ function create_block_gutenberg_lab_block_init() {
 		'lab-category-cards',
 		'lab-tag-cards',
 		'lab-search',
+		'lab-tabs',
+		'lab-tab',
+		'lab-accordion',
+		'lab-accordion-item',
+		'lab-review-slider',
+		'lab-review-card',
+		'lab-tab-suite',
 	);
 	foreach ( $blocks as $block ) {
 		$block_path = __DIR__ . '/build/' . $block;

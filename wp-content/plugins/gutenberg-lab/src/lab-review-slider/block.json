@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/lab-review-slider",
+	"version": "0.1.0",
+	"title": "Lab Review Slider",
+	"category": "widgets",
+	"icon": "slides",
+	"description": "A slider of review cards. Add as many reviews as you need.",
+	"keywords": [ "review", "slider", "carousel", "testimonial", "lab" ],
+	"allowedBlocks": [ "create-block/lab-review-card" ],
+	"attributes": {
+		"autoplay": {
+			"type": "boolean",
+			"default": false
+		},
+		"showDots": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"align": [ "wide" ],
+		"html": false
+	},
+	"textdomain": "gutenberg-lab",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}

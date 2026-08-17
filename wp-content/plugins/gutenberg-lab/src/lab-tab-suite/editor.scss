@@ -1,0 +1,251 @@
+/**
+ * Lab Tab Suite — editor chrome.
+ */
+.lts--editor {
+	padding: 0.9rem;
+	border: 1px dashed #c3c4c7;
+	border-radius: 8px;
+	background: #f6f7f7;
+}
+
+.lts__toolbar {
+	display: block;
+	margin: 0 0 0.85rem;
+}
+
+.lts--editor .lts__tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+	align-items: center;
+	margin: 0 0 0.6rem;
+	padding: 0 0 0.5rem;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.lts--editor .lts__tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.15rem 0.35rem;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background: transparent;
+}
+
+.lts--editor .lts__tab.is-active {
+	border-color: #1e1e1e;
+	background: #fff;
+}
+
+.lts--editor .lts__tab-button {
+	appearance: none;
+	margin: 0;
+	padding: 0.35rem 0.5rem;
+	border: 0;
+	background: transparent;
+	color: #1e1e1e;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.lts--editor .lts__tab-actions {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.1rem;
+}
+
+.lts--editor .lts__add-tab {
+	margin-left: auto;
+}
+
+.lts__help {
+	margin: 0.75rem 0 0;
+	font-size: 12px;
+	line-height: 1.45;
+	color: #757575;
+}
+
+.lts__empty {
+	margin: 0.65rem 0;
+	color: #757575;
+	font-style: italic;
+}
+
+.lts__empty--small {
+	font-size: 12px;
+}
+
+.lts__panel {
+	padding: 0.5rem 0;
+}
+
+.lts__panel-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin: 0 0 0.65rem;
+}
+
+.lts__items {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+}
+
+.lts-item {
+	padding: 0.75rem;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #fff;
+}
+
+.lts-item__title {
+	margin: 0 !important;
+	padding: 0.4rem 0.55rem;
+	border-left: 3px solid #1e1e1e;
+	background: #f6f7f7;
+	font-size: 0.95rem !important;
+	font-weight: 700 !important;
+	line-height: 1.35 !important;
+}
+
+.lts-item__head {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin: 0 0 0.65rem;
+	padding: 0 0 0.65rem;
+	border-bottom: 1px dashed #e0e0e0;
+}
+
+.lts-item__fields {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.lts-item__add-field {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 0.25rem;
+}
+
+.lts-field {
+	padding: 0.65rem 0.75rem;
+	border: 1px solid #eaeaea;
+	border-radius: 5px;
+	background: #fafafa;
+}
+
+.lts-field__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	margin: 0 0 0.5rem;
+}
+
+.lts-field__badge {
+	display: inline-block;
+	padding: 0.15rem 0.5rem;
+	border-radius: 999px;
+	background: #1e1e1e;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+.lts-field__actions {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.1rem;
+}
+
+.lts-field__body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.55rem;
+}
+
+.lts-field__value {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.lts-field__hint {
+	margin: 0;
+	font-size: 12px;
+	color: #757575;
+}
+
+.lts-field__richtext-input {
+	min-height: 3rem;
+	padding: 0.5rem 0.65rem;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.lts-field__richtext-input:focus {
+	outline: 2px solid #1e1e1e;
+	outline-offset: -2px;
+}
+
+.lts-field__image {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.lts-field__image-preview {
+	display: block;
+	max-width: 100%;
+	padding: 0.35rem;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.lts-field__image-preview img {
+	display: block;
+	max-width: 100%;
+	max-height: 12rem;
+	height: auto;
+	margin: 0 auto;
+}
+
+.lts-field__image-empty {
+	padding: 1rem;
+	border: 1px dashed #c3c4c7;
+	border-radius: 4px;
+	background: #fff;
+	color: #757575;
+	font-size: 12px;
+	text-align: center;
+}
+
+.lts-field__options {
+	margin-top: 0.35rem;
+	padding-top: 0.5rem;
+	border-top: 1px dashed #e0e0e0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.lts-field__options-title {
+	margin: 0;
+	font-size: 12px;
+	font-weight: 700;
+	color: #1e1e1e;
+}
+
+.lts-field__option {
+	align-items: center;
+}
